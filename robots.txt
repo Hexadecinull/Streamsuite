@@ -1,0 +1,38 @@
+User-agent: *
+# Private user pages
+Disallow: /login
+Disallow: /register
+Disallow: /settings
+Disallow: /history
+Disallow: /favorites
+# API — not useful to index
+Disallow: /api/
+# Player — not useful to index directly
+Disallow: /watch
+# PHP includes — should not be directly accessible anyway
+Disallow: /includes/
+# Static assets are fine to crawl
+Allow: /assets/
+
+# Ask well-behaved bots to slow down a bit
+Crawl-delay: 2
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Googlebot
+Crawl-delay: 1
+
+Sitemap: https://streamsuite.ct.ws/sitemap

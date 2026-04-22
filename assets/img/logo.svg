@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#0c0c0d"/>
+  <path d="M8 10C8 9.44772 8.44772 9 9 9H19C19.5523 9 20 9.44772 20 10V16C20 16.5523 19.5523 17 19 17H9C8.44772 17 8 16.5523 8 16V10Z" fill="#e8c97e"/>
+  <path d="M20 12.5L25 15.5V10.5L20 12.5Z" fill="#e8c97e"/>
+  <rect x="8" y="20" width="16" height="2" rx="1" fill="#e8c97e" opacity="0.5"/>
+  <rect x="8" y="24" width="10" height="2" rx="1" fill="#e8c97e" opacity="0.3"/>
+  <text x="40" y="21" font-family="system-ui, -apple-system, sans-serif"
+        font-weight="700" font-size="14" fill="#f0eff4" letter-spacing="-0.3">StreamSuite</text>
+</svg>

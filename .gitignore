@@ -1,0 +1,20 @@
+# PHP
+vendor/
+*.log
+*.cache
+*.tmp
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+includes/config.php
+assets/img/placeholder-*.svg

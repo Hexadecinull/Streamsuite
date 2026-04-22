@@ -1,0 +1,67 @@
+/*
+ * StreamSuite — Free, open-source streaming website
+ * Copyright (C) 2026  StreamSuite Contributors
+ * (GPL-3.0 license)
+ */
+
+.container {
+    max-width: var(--max-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-s { gap: 0.5rem; }
+.gap-m { gap: 1rem; }
+.gap-l { gap: 2rem; }
+
+.grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+.grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+@media (max-width: 1024px) {
+    .lg\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+    .sm\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-50 { z-index: 50; }
+
+.p-s { padding: 0.5rem; }
+.p-m { padding: 1rem; }
+.p-l { padding: 2rem; }
+.px-m { padding-left: 1rem; padding-right: 1rem; }
+.py-m { padding-top: 1rem; padding-bottom: 1rem; }
+
+.mt-auto { margin-top: auto; }
+.mb-m { margin-bottom: 1rem; }
+.mt-l { margin-top: 2rem; }
+
+.hidden { display: none; }

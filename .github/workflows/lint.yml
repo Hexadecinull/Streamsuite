@@ -1,0 +1,97 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  php-lint:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql, json
+
+      - name: PHP syntax check (all files)
+        run: find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+
+  js-lint:
+    name: JavaScript Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Write ESLint config
+        run: |
+          cat > .eslintrc.json << 'JSON'
+          {
+            "env": { "browser": true, "es2022": true },
+            "parserOptions": { "ecmaVersion": 2022, "sourceType": "module" },
+            "rules": {
+              "no-undef": "warn",
+              "no-unused-vars": "warn",
+              "no-console": "off",
+              "eqeqeq": "error",
+              "semi": ["error", "always"],
+              "no-var": "error"
+            }
+          }
+          JSON
+
+      - name: Install ESLint
+        run: npm install -g eslint
+
+      - name: Lint JavaScript
+        run: eslint "assets/js/**/*.js" --no-error-on-unmatched-pattern
+
+  css-lint:
+    name: CSS Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Write Stylelint config
+        run: |
+          cat > .stylelintrc.json << 'JSON'
+          {
+            "rules": {
+              "color-no-invalid-hex": true,
+              "declaration-block-no-duplicate-properties": true,
+              "no-duplicate-selectors": true,
+              "unit-no-unknown": true,
+              "property-no-unknown": true
+            }
+          }
+          JSON
+
+      - name: Install Stylelint
+        run: npm install -g stylelint
+
+      - name: Lint CSS
+        run: stylelint "assets/css/**/*.css" --allow-empty-input
+
+  validate-json:
+    name: Validate JSON Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate composer.json
+        run: python3 -c "import json,sys; json.load(open('composer.json'))" && echo "composer.json OK"

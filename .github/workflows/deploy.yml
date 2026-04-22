@@ -1,0 +1,53 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify required secrets
+        run: |
+          if [ -z "${{ secrets.FTP_USERNAME }}" ] || [ -z "${{ secrets.FTP_PASSWORD }}" ]; then
+            echo "ERROR: FTP_USERNAME and FTP_PASSWORD must be set in repository secrets."
+            exit 1
+          fi
+          echo "Secrets OK"
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:      ${{ secrets.FTP_HOST }}
+          username:    ${{ secrets.FTP_USERNAME }}
+          password:    ${{ secrets.FTP_PASSWORD }}
+          local-dir:   ./
+          server-dir:  /streamsuite.ct.ws/htdocs/
+          protocol:    ftp
+          port:        21
+          timeout:     60000
+          log-level:   minimal
+          exclude: |
+            **/.git/**
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            .gitignore
+            .gitattributes
+            .eslintrc.json
+            .stylelintrc.json
+            composer.json
+            composer.lock
+            README.md
+            CONTRIBUTING.md
+            SECURITY.md
+            CHANGELOG.md
+            LICENSE
+            docs/**
+            includes/config.php

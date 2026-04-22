@@ -1,0 +1,27 @@
+{
+    "name": "streamsuite/streamsuite",
+    "description": "Free, open-source streaming website powered by TMDB",
+    "license": "GPL-3.0-or-later",
+    "type": "project",
+    "keywords": ["streaming", "tmdb", "movies", "tv", "php"],
+    "homepage": "https://github.com/SSMG4/streamsuite",
+    "support": {
+        "issues": "https://github.com/SSMG4/streamsuite/issues",
+        "source":  "https://github.com/SSMG4/streamsuite"
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.8",
+        "phpstan/phpstan":            "^1.10"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages":       true
+    },
+    "scripts": {
+        "lint":   "phpcs --standard=PSR12 api/ includes/ *.php",
+        "analyse": "phpstan analyse --level=5 api/ includes/"
+    }
+}

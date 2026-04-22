@@ -1,0 +1,317 @@
+/*
+ * StreamSuite — Free, open-source streaming website
+ * Copyright (C) 2026  StreamSuite Contributors
+ * (GPL-3.0 license)
+ */
+
+#detail-page {
+    padding-bottom: 5rem;
+}
+
+.detail-backdrop {
+    position: relative;
+    height: 420px;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+.detail-backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(12,12,13,0.2) 0%,
+        rgba(12,12,13,0.6) 60%,
+        var(--c-bg) 100%
+    );
+}
+
+.detail-container {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2.5rem;
+    margin-top: -140px;
+    position: relative;
+    z-index: 2;
+    align-items: start;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--c-border);
+    margin-bottom: 3rem;
+}
+
+.detail-poster {
+    flex-shrink: 0;
+}
+
+.detail-poster img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-l);
+    border: 1px solid var(--c-border);
+}
+
+.detail-info {
+    padding-top: 1rem;
+}
+
+.detail-info h1 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+}
+
+.detail-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-text-2);
+    letter-spacing: 0.02em;
+}
+
+.detail-meta .rating {
+    color: var(--c-accent);
+}
+
+.tagline {
+    font-style: italic;
+    color: var(--c-text-3);
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.detail-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.overview {
+    color: var(--c-text-2);
+    line-height: 1.75;
+    max-width: 680px;
+}
+
+.detail-section {
+    margin-bottom: 3rem;
+}
+
+.detail-section h2 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.cast-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+.cast-card {
+    text-align: center;
+}
+
+.cast-photo {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-bg-3);
+    border: 2px solid var(--c-border);
+    margin-bottom: 0.5rem;
+}
+
+.cast-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cast-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--c-text-3);
+}
+
+.cast-name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cast-character {
+    font-size: 0.75rem;
+    color: var(--c-text-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.season-select {
+    background: var(--c-bg-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-m);
+    color: var(--c-text);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+    cursor: pointer;
+}
+
+.season-select:focus {
+    outline: none;
+    border-color: var(--c-accent);
+}
+
+.episodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+}
+
+.episode-item {
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: var(--c-bg-2);
+    transition: background var(--transition);
+}
+
+.episode-item:hover {
+    background: var(--c-bg-3);
+}
+
+.episode-item + .episode-item {
+    border-top: 1px solid var(--c-border);
+}
+
+.episode-still {
+    flex-shrink: 0;
+}
+
+.episode-still img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: var(--radius-s);
+    background: var(--c-bg-4);
+}
+
+.episode-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.episode-number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-accent);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.episode-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.episode-runtime {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-text-3);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.episode-overview {
+    font-size: 0.8rem;
+    color: var(--c-text-3);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.trailer-frame {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+}
+
+.trailer-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+.btn-favorited {
+    background: var(--c-accent-dim);
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+}
+
+@media (max-width: 900px) {
+    .detail-container {
+        grid-template-columns: 160px 1fr;
+        gap: 1.5rem;
+        margin-top: -80px;
+    }
+    .cast-grid { grid-template-columns: repeat(4, 1fr); }
+    .related-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+        margin-top: 0;
+    }
+    .detail-poster {
+        max-width: 180px;
+        margin: 0 auto;
+    }
+    .detail-info { text-align: center; }
+    .detail-actions { justify-content: center; }
+    .detail-meta { justify-content: center; }
+    .cast-grid { grid-template-columns: repeat(3, 1fr); }
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
+    .episode-item { grid-template-columns: 120px 1fr; }
+    .episode-item .btn { display: none; }
+    .episode-item { cursor: pointer; }
+    .detail-backdrop { height: 280px; }
+}
