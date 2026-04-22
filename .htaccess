@@ -23,6 +23,7 @@ RewriteCond %{REQUEST_URI} ^/api/ [NC]
 RewriteRule ^ - [L]
 
 # Clean URL routing: /browse → browse.php, /watch → watch.php, etc.
+RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
 RewriteRule ^([a-z0-9\-]+)/?$ $1.php [L,QSA]
 
 # ─── Block Sensitive Files ────────────────────────────────────────────────────

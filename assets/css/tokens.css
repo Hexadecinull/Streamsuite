@@ -4,6 +4,11 @@
  * (GPL-3.0 license)
  */
 
+/*
+ * Fonts are loaded from CDN in head.php via <link> elements.
+ * @font-face declarations here act as local fallback for self-hosted setups
+ * where operators have placed the font files in /assets/fonts/.
+ */
 @font-face {
     font-family: 'Satoshi';
     src: url('/assets/fonts/Satoshi-Variable.woff2') format('woff2');
@@ -53,8 +58,8 @@
     --shadow-m: 0 8px 32px rgba(0,0,0,0.6);
     --shadow-l: 0 20px 60px rgba(0,0,0,0.8);
 
-    --font-display: 'Satoshi', 'Helvetica Neue', sans-serif;
-    --font-body:    'Satoshi', 'Helvetica Neue', sans-serif;
+    --font-display: 'Satoshi', 'Helvetica Neue', Arial, sans-serif;
+    --font-body:    'Satoshi', 'Helvetica Neue', Arial, sans-serif;
     --font-mono:    'DM Mono', 'Courier New', monospace;
 
     --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);

@@ -310,8 +310,7 @@
     .detail-meta { justify-content: center; }
     .cast-grid { grid-template-columns: repeat(3, 1fr); }
     .related-grid { grid-template-columns: repeat(3, 1fr); }
-    .episode-item { grid-template-columns: 120px 1fr; }
+    .episode-item { grid-template-columns: 120px 1fr; cursor: pointer; }
     .episode-item .btn { display: none; }
-    .episode-item { cursor: pointer; }
     .detail-backdrop { height: 280px; }
 }

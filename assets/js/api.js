@@ -33,25 +33,24 @@ const Api = {
     },
 
     async request(endpoint, options = {}) {
-        const url = this.baseUrl + endpoint;
+        const url     = this.baseUrl + endpoint;
         const headers = {
-            'Content-Type': 'application/json',
+            'Content-Type':  'application/json',
             'X-Guest-Token': this.getGuestToken(),
             ...options.headers,
         };
 
         const authToken = this.getAuthToken();
-        if (authToken) {
-            headers['Authorization'] = `Bearer ${authToken}`;
-        }
-
-        const config = {
-            ...options,
-            headers,
-        };
+        if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
 
         try {
-            const response = await fetch(url, config);
+            const response = await fetch(url, { ...options, headers });
+
+            const contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                throw new Error(`Server error (HTTP ${response.status}) — expected JSON but got ${contentType.split(';')[0]}`);
+            }
+
             const data = await response.json();
 
             if (!response.ok || !data.success) {
@@ -60,7 +59,9 @@ const Api = {
 
             return data.data;
         } catch (error) {
-            console.error('API Error:', error);
+            if (error.name !== 'TypeError') {
+                console.error('API Error:', error.message || error);
+            }
             throw error;
         }
     },
@@ -72,14 +73,14 @@ const Api = {
     post(endpoint, body) {
         return this.request(endpoint, {
             method: 'POST',
-            body: JSON.stringify(body),
+            body:   JSON.stringify(body),
         });
     },
 
     delete(endpoint, body) {
         return this.request(endpoint, {
             method: 'DELETE',
-            body: body ? JSON.stringify(body) : undefined,
+            body:   body ? JSON.stringify(body) : undefined,
         });
     },
 };

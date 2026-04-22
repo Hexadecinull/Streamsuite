@@ -35,4 +35,4 @@ Disallow: /
 User-agent: Googlebot
 Crawl-delay: 1
 
-Sitemap: https://streamsuite.ct.ws/sitemap
+Sitemap: https://streamsuite.ct.ws/sitemap.xml

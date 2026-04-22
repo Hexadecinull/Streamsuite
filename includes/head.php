@@ -17,7 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-if (!isset($pageTitle)) $pageTitle = 'StreamSuite';
+if (!isset($pageTitle))       $pageTitle       = 'StreamSuite';
 if (!isset($pageDescription)) $pageDescription = 'Stream everything. Own nothing. Pay nothing.';
 ?>
 <!DOCTYPE html>
@@ -27,7 +27,25 @@ if (!isset($pageDescription)) $pageDescription = 'Stream everything. Own nothing
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?> — StreamSuite</title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
+    <meta name="robots" content="index, follow">
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <link rel="canonical" href="<?= htmlspecialchars((defined('APP_URL') ? APP_URL : '') . strtok($_SERVER['REQUEST_URI'] ?? '/', '?')) ?>">
+
+    <!--
+        Fonts loaded from Bunny Fonts CDN (privacy-friendly, GDPR compliant, no Google tracking).
+        Satoshi: https://fonts.bunny.net
+        DM Mono: https://fonts.bunny.net
+        If you self-host the WOFF2 files in /assets/fonts/, the @font-face in tokens.css
+        will serve them locally and these CDN links become unused fallbacks.
+    -->
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=dm-mono:400|space-grotesk:300,400,500,600,700&display=swap">
+    <!--
+        Satoshi isn't on Bunny Fonts — load from Fontshare (free, no tracking).
+        Fontshare is operated by Indian Type Foundry and is free for commercial use.
+    -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@1,2,3,4,5,6,7,8,9&display=swap">
 
     <!-- CSS -->
     <link rel="stylesheet" href="/assets/css/reset.css">
@@ -36,12 +54,16 @@ if (!isset($pageDescription)) $pageDescription = 'Stream everything. Own nothing
     <link rel="stylesheet" href="/assets/css/layout.css">
     <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/nav.css">
-    <?php if (isset($extraCss)): foreach ((array)$extraCss as $css): ?>
+    <?php if (isset($extraCss)): foreach ((array) $extraCss as $css): ?>
         <link rel="stylesheet" href="<?= htmlspecialchars($css) ?>">
     <?php endforeach; endif; ?>
 
-    <!-- Preload fonts -->
-    <link rel="preload" href="/assets/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/DMMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- SVG icon sprite (inline so icons are available immediately) -->
+    <?php
+    $spritePath = __DIR__ . '/../assets/icons/sprite.svg';
+    if (file_exists($spritePath)) {
+        readfile($spritePath);
+    }
+    ?>
 </head>
 <body>

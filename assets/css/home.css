@@ -168,11 +168,10 @@
 }
 
 @media (max-width: 640px) {
-    .row-items { grid-template-columns: repeat(3, 1fr); }
+    .row-items { grid-template-columns: repeat(3, 1fr); padding: 0 1rem; }
     .featured-section { min-height: 55vh; }
     .featured-content { padding: 2rem 1rem; }
     .row-header { padding: 0 1rem; }
-    .row-items { padding: 0 1rem; }
 }
 
 @media (max-width: 420px) {
