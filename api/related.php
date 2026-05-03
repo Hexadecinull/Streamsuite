@@ -25,17 +25,31 @@ require_once __DIR__ . '/../includes/response.php';
 $catalogId = sanitizeInt($_GET['catalog_id'] ?? 0, 1);
 if (!$catalogId) jsonError('Missing catalog_id', 422);
 
-$db   = getDB();
-$stmt = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE id = ?');
-$stmt->execute([$catalogId]);
-$catalog = $stmt->fetch();
-if (!$catalog) jsonError('Not found', 404);
+$tmdbId    = $catalogId;
+$mediaType = 'movie';
+
+try {
+    $db   = getDB();
+    $stmt = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE id = ? LIMIT 1');
+    $stmt->execute([$catalogId]);
+    $catalog = $stmt->fetch();
+
+    if (!$catalog) {
+        $stmt2 = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE tmdb_id = ? LIMIT 1');
+        $stmt2->execute([$catalogId]);
+        $catalog = $stmt2->fetch();
+    }
+
+    if ($catalog) {
+        $tmdbId    = (int) $catalog['tmdb_id'];
+        $mediaType = $catalog['media_type'];
+    }
+} catch (Throwable) {}
 
 $tmdb      = new TMDB(TMDB_API_KEY);
-$mediaType = $catalog['media_type'];
 $data      = $mediaType === 'movie'
-    ? $tmdb->movie((int) $catalog['tmdb_id'])
-    : $tmdb->tv((int) $catalog['tmdb_id']);
+    ? $tmdb->movie($tmdbId)
+    : $tmdb->tv($tmdbId);
 
 $rawItems = $data['recommendations']['results'] ?? $data['similar']['results'] ?? [];
 

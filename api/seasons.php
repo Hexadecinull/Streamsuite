@@ -25,16 +25,31 @@ require_once __DIR__ . '/../includes/response.php';
 $catalogId = sanitizeInt($_GET['catalog_id'] ?? 0, 1);
 if (!$catalogId) jsonError('Missing catalog_id', 422);
 
-$db   = getDB();
-$stmt = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE id = ?');
-$stmt->execute([$catalogId]);
-$catalog = $stmt->fetch();
+$tmdbId    = $catalogId;
+$mediaType = 'tv';
 
-if (!$catalog)                          jsonError('Not found', 404);
-if ($catalog['media_type'] !== 'tv')    jsonError('Not a TV series', 422);
+try {
+    $db   = getDB();
+    $stmt = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE id = ? LIMIT 1');
+    $stmt->execute([$catalogId]);
+    $catalog = $stmt->fetch();
+
+    if (!$catalog) {
+        $stmt2 = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE tmdb_id = ? LIMIT 1');
+        $stmt2->execute([$catalogId]);
+        $catalog = $stmt2->fetch();
+    }
+
+    if ($catalog) {
+        $tmdbId    = (int) $catalog['tmdb_id'];
+        $mediaType = $catalog['media_type'];
+    }
+} catch (Throwable) {}
+
+if ($mediaType !== 'tv') jsonError('Not a TV series', 422);
 
 $tmdb    = new TMDB(TMDB_API_KEY);
-$data    = $tmdb->tv((int) $catalog['tmdb_id']);
+$data    = $tmdb->tv($tmdbId);
 $seasons = [];
 
 foreach ($data['seasons'] ?? [] as $season) {

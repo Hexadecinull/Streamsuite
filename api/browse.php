@@ -53,7 +53,12 @@ if ($year > 1900 && $year <= (int) date('Y') + 1) {
 }
 
 $tmdb = new TMDB(TMDB_API_KEY);
-$data = $tmdb->discover($type, $params);
+
+try {
+    $data = $tmdb->discover($type, $params);
+} catch (Throwable) {
+    jsonSuccess(['page' => $page, 'total_pages' => 1, 'total_results' => 0, 'results' => []]);
+}
 
 $results = array_map(function (array $item) use ($tmdb, $type): array {
     $releaseDate = $type === 'movie'

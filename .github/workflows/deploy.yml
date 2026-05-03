@@ -42,6 +42,7 @@ jobs:
             .gitattributes
             .eslintrc.json
             .stylelintrc.json
+            eslint.config.mjs
             composer.json
             composer.lock
             README.md

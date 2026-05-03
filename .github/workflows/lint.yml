@@ -33,23 +33,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Write ESLint config
-        run: |
-          cat > .eslintrc.json << 'JSON'
-          {
-            "env": { "browser": true, "es2022": true },
-            "parserOptions": { "ecmaVersion": 2022, "sourceType": "module" },
-            "rules": {
-              "no-undef": "warn",
-              "no-unused-vars": "warn",
-              "no-console": "off",
-              "eqeqeq": "error",
-              "semi": ["error", "always"],
-              "no-var": "error"
-            }
-          }
-          JSON
-
       - name: Install ESLint
         run: npm install -g eslint
 

@@ -27,33 +27,38 @@ if (!$id || !ctype_digit($id)) jsonError('Missing or invalid ID', 422);
 $id = (int) $id;
 
 $tmdb = new TMDB(TMDB_API_KEY);
-$db   = getDB();
 
-$stmt = $db->prepare('SELECT * FROM catalog WHERE tmdb_id = ?');
-$stmt->execute([$id]);
-$local = $stmt->fetch();
+try {
+    $db = getDB();
 
-if ($local && !empty($local['title'])) {
-    jsonSuccess([
-        'id'             => (int) $local['id'],
-        'tmdb_id'        => (int) $local['tmdb_id'],
-        'media_type'     => $local['media_type'],
-        'title'          => $local['title'],
-        'original_title' => $local['original_title'],
-        'overview'       => $local['overview'],
-        'poster_url'     => $tmdb->posterUrl($local['poster_path'], 'w500'),
-        'backdrop_url'   => $tmdb->backdropUrl($local['backdrop_path']),
-        'release_date'   => $local['release_date'],
-        'year'           => (int) $local['year'],
-        'rating'         => round((float) $local['rating'], 1),
-        'vote_count'     => (int) $local['vote_count'],
-        'runtime'        => (int) $local['runtime'],
-        'genres'         => json_decode($local['genres']   ?? '[]', true),
-        'countries'      => json_decode($local['countries'] ?? '[]', true),
-        'tagline'        => $local['tagline'],
-        'trailer_key'    => $local['trailer_key'],
-        'cast'           => json_decode($local['cast_json'] ?? '[]', true),
-    ]);
+    $stmt = $db->prepare('SELECT * FROM catalog WHERE tmdb_id = ?');
+    $stmt->execute([$id]);
+    $local = $stmt->fetch();
+
+    if ($local && !empty($local['title'])) {
+        jsonSuccess([
+            'id'             => (int) $local['id'],
+            'tmdb_id'        => (int) $local['tmdb_id'],
+            'media_type'     => $local['media_type'],
+            'title'          => $local['title'],
+            'original_title' => $local['original_title'],
+            'overview'       => $local['overview'],
+            'poster_url'     => $tmdb->posterUrl($local['poster_path'], 'w500'),
+            'backdrop_url'   => $tmdb->backdropUrl($local['backdrop_path']),
+            'release_date'   => $local['release_date'],
+            'year'           => (int) $local['year'],
+            'rating'         => round((float) $local['rating'], 1),
+            'vote_count'     => (int) $local['vote_count'],
+            'runtime'        => (int) $local['runtime'],
+            'genres'         => json_decode($local['genres']   ?? '[]', true),
+            'countries'      => json_decode($local['countries'] ?? '[]', true),
+            'tagline'        => $local['tagline'],
+            'trailer_key'    => $local['trailer_key'],
+            'cast'           => json_decode($local['cast_json'] ?? '[]', true),
+        ]);
+    }
+} catch (Throwable) {
+    $db = null;
 }
 
 $tmdbData  = $tmdb->movie($id);
@@ -95,32 +100,48 @@ $cast = array_slice(
     0, 10
 );
 
-$db->prepare(
-    'INSERT INTO catalog
-         (tmdb_id, media_type, title, original_title, overview, poster_path, backdrop_path,
-          release_date, year, rating, vote_count, popularity, runtime, genres, countries,
-          tagline, trailer_key, cast_json, cached_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-     ON DUPLICATE KEY UPDATE
-         title = VALUES(title), original_title = VALUES(original_title),
-         overview = VALUES(overview), poster_path = VALUES(poster_path),
-         backdrop_path = VALUES(backdrop_path), release_date = VALUES(release_date),
-         year = VALUES(year), rating = VALUES(rating), vote_count = VALUES(vote_count),
-         popularity = VALUES(popularity), runtime = VALUES(runtime), genres = VALUES(genres),
-         countries = VALUES(countries), tagline = VALUES(tagline), trailer_key = VALUES(trailer_key),
-         cast_json = VALUES(cast_json), cached_at = NOW()'
-)->execute([
-    $id, $mediaType, $title, $originalTitle, $tmdbData['overview'] ?? '',
-    $tmdbData['poster_path']   ?? '', $tmdbData['backdrop_path']  ?? '',
-    $releaseDate, $year, $tmdbData['vote_average'] ?? 0, $tmdbData['vote_count'] ?? 0,
-    $tmdbData['popularity'] ?? 0, $runtime,
-    json_encode(array_column($tmdbData['genres'] ?? [], 'name')),
-    json_encode(array_column($tmdbData['production_countries'] ?? [], 'name')),
-    $tmdbData['tagline'] ?? '', $trailerKey, json_encode($cast),
-]);
+$catalogId = $id;
+
+if ($db !== null) {
+    try {
+        $db->prepare(
+            'INSERT INTO catalog
+                 (tmdb_id, media_type, title, original_title, overview, poster_path, backdrop_path,
+                  release_date, year, rating, vote_count, popularity, runtime, genres, countries,
+                  tagline, trailer_key, cast_json, cached_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+             ON DUPLICATE KEY UPDATE
+                 title = VALUES(title), original_title = VALUES(original_title),
+                 overview = VALUES(overview), poster_path = VALUES(poster_path),
+                 backdrop_path = VALUES(backdrop_path), release_date = VALUES(release_date),
+                 year = VALUES(year), rating = VALUES(rating), vote_count = VALUES(vote_count),
+                 popularity = VALUES(popularity), runtime = VALUES(runtime), genres = VALUES(genres),
+                 countries = VALUES(countries), tagline = VALUES(tagline), trailer_key = VALUES(trailer_key),
+                 cast_json = VALUES(cast_json), cached_at = NOW()'
+        )->execute([
+            $id, $mediaType, $title, $originalTitle, $tmdbData['overview'] ?? '',
+            $tmdbData['poster_path']   ?? '', $tmdbData['backdrop_path']  ?? '',
+            $releaseDate, $year, $tmdbData['vote_average'] ?? 0, $tmdbData['vote_count'] ?? 0,
+            $tmdbData['popularity'] ?? 0, $runtime,
+            json_encode(array_column($tmdbData['genres'] ?? [], 'name')),
+            json_encode(array_column($tmdbData['production_countries'] ?? [], 'name')),
+            $tmdbData['tagline'] ?? '', $trailerKey, json_encode($cast),
+        ]);
+
+        $inserted = (int) $db->lastInsertId();
+        if ($inserted > 0) {
+            $catalogId = $inserted;
+        } else {
+            $stmt2 = $db->prepare('SELECT id FROM catalog WHERE tmdb_id = ? AND media_type = ? LIMIT 1');
+            $stmt2->execute([$id, $mediaType]);
+            $resolved = (int) $stmt2->fetchColumn();
+            if ($resolved > 0) $catalogId = $resolved;
+        }
+    } catch (Throwable) {}
+}
 
 jsonSuccess([
-    'id'             => $id,
+    'id'             => $catalogId,
     'tmdb_id'        => $id,
     'media_type'     => $mediaType,
     'title'          => $title,

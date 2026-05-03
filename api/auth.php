@@ -32,10 +32,14 @@ if ($action === 'login') {
         jsonError('Invalid credentials', 401);
     }
 
-    $db   = getDB();
-    $stmt = $db->prepare('SELECT id, password, display_name FROM users WHERE email = ?');
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
+    try {
+        $db   = getDB();
+        $stmt = $db->prepare('SELECT id, password, display_name FROM users WHERE email = ?');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+    } catch (Throwable) {
+        jsonError('Service unavailable', 503);
+    }
 
     if (!$user || !password_verify($password, $user['password'])) {
         jsonError('Invalid credentials', 401);
@@ -107,10 +111,14 @@ if ($action === 'logout') {
 
 if ($action === 'me') {
     $userId = requireAuth();
-    $db     = getDB();
-    $stmt   = $db->prepare('SELECT id, email, display_name, theme, font, created_at FROM users WHERE id = ?');
-    $stmt->execute([$userId]);
-    $user   = $stmt->fetch();
+    try {
+        $db   = getDB();
+        $stmt = $db->prepare('SELECT id, email, display_name, theme, font, created_at FROM users WHERE id = ?');
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch();
+    } catch (Throwable) {
+        jsonError('Service unavailable', 503);
+    }
     if (!$user) jsonError('User not found', 404);
     jsonSuccess($user);
 }

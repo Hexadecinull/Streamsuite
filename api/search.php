@@ -30,7 +30,12 @@ if (!$query) jsonError('Missing query parameter', 422);
 if (strlen($query) > 200) $query = substr($query, 0, 200);
 
 $tmdb = new TMDB(TMDB_API_KEY);
-$data = $tmdb->search($query, $page);
+
+try {
+    $data = $tmdb->search($query, $page);
+} catch (Throwable) {
+    jsonSuccess(['query' => $query, 'page' => $page, 'total_pages' => 1, 'results' => []]);
+}
 
 $validTypes = ['movie', 'tv'];
 

@@ -41,66 +41,70 @@ function mapItem(array $item, TMDB $tmdb, string $forceType = ''): array {
     ];
 }
 
-$trendingRaw    = $tmdb->trending('all', 'week');
-$trendingItems  = $trendingRaw['results'] ?? [];
+try {
+    $trendingRaw   = $tmdb->trending('all', 'week');
+    $trendingItems = $trendingRaw['results'] ?? [];
 
-$popularMovies  = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'vote_count.gte' => 50])['results'] ?? [];
-$popularTV      = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results'] ?? [];
+    $popularMovies = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'vote_count.gte' => 50])['results'] ?? [];
+    $popularTV     = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results'] ?? [];
 
-$validTypes    = ['movie', 'tv'];
-$trendingValid = array_values(array_filter(
-    $trendingItems,
-    fn ($i) => in_array($i['media_type'] ?? '', $validTypes, true)
-));
+    $validTypes    = ['movie', 'tv'];
+    $trendingValid = array_values(array_filter(
+        $trendingItems,
+        fn ($i) => in_array($i['media_type'] ?? '', $validTypes, true)
+    ));
 
-$featured = null;
-if (!empty($trendingValid)) {
-    usort($trendingValid, fn ($a, $b) => ($b['vote_average'] ?? 0) <=> ($a['vote_average'] ?? 0));
-    $pool         = array_slice($trendingValid, 0, 5);
-    $featuredItem = $pool[0];
-    $featured     = [
-        'id'           => (int) $featuredItem['id'],
-        'tmdb_id'      => (int) $featuredItem['id'],
-        'media_type'   => $featuredItem['media_type'],
-        'title'        => $featuredItem['media_type'] === 'movie'
-            ? ($featuredItem['title'] ?? '')
-            : ($featuredItem['name']  ?? ''),
-        'overview'     => $featuredItem['overview']     ?? '',
-        'poster_url'   => $tmdb->posterUrl($featuredItem['poster_path']   ?? '', 'w500'),
-        'backdrop_url' => $tmdb->backdropUrl($featuredItem['backdrop_path'] ?? ''),
-        'rating'       => round((float) ($featuredItem['vote_average'] ?? 0), 1),
-        'year'         => substr(
-            $featuredItem['release_date'] ?? $featuredItem['first_air_date'] ?? '',
-            0, 4
-        ),
+    $featured = null;
+    if (!empty($trendingValid)) {
+        usort($trendingValid, fn ($a, $b) => ($b['vote_average'] ?? 0) <=> ($a['vote_average'] ?? 0));
+        $pool         = array_slice($trendingValid, 0, 5);
+        $featuredItem = $pool[0];
+        $featured     = [
+            'id'           => (int) $featuredItem['id'],
+            'tmdb_id'      => (int) $featuredItem['id'],
+            'media_type'   => $featuredItem['media_type'],
+            'title'        => $featuredItem['media_type'] === 'movie'
+                ? ($featuredItem['title'] ?? '')
+                : ($featuredItem['name']  ?? ''),
+            'overview'     => $featuredItem['overview']     ?? '',
+            'poster_url'   => $tmdb->posterUrl($featuredItem['poster_path']   ?? '', 'w500'),
+            'backdrop_url' => $tmdb->backdropUrl($featuredItem['backdrop_path'] ?? ''),
+            'rating'       => round((float) ($featuredItem['vote_average'] ?? 0), 1),
+            'year'         => substr(
+                $featuredItem['release_date'] ?? $featuredItem['first_air_date'] ?? '',
+                0, 4
+            ),
+        ];
+    }
+
+    $rows = [
+        [
+            'id'    => 'trending',
+            'title' => 'Trending Now',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb),
+                array_slice($trendingValid, 0, 12)
+            ),
+        ],
+        [
+            'id'    => 'popular_movies',
+            'title' => 'Popular Movies',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'movie'),
+                array_slice($popularMovies, 0, 12)
+            ),
+        ],
+        [
+            'id'    => 'popular_tv',
+            'title' => 'Popular Series',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'tv'),
+                array_slice($popularTV, 0, 12)
+            ),
+        ],
     ];
+
+    jsonSuccess(['featured' => $featured, 'rows' => $rows]);
+} catch (Throwable) {
+    jsonSuccess(['featured' => null, 'rows' => []]);
 }
-
-$rows = [
-    [
-        'id'    => 'trending',
-        'title' => 'Trending Now',
-        'items' => array_map(
-            fn ($i) => mapItem($i, $tmdb),
-            array_slice($trendingValid, 0, 12)
-        ),
-    ],
-    [
-        'id'    => 'popular_movies',
-        'title' => 'Popular Movies',
-        'items' => array_map(
-            fn ($i) => mapItem($i, $tmdb, 'movie'),
-            array_slice($popularMovies, 0, 12)
-        ),
-    ],
-    [
-        'id'    => 'popular_tv',
-        'title' => 'Popular Series',
-        'items' => array_map(
-            fn ($i) => mapItem($i, $tmdb, 'tv'),
-            array_slice($popularTV, 0, 12)
-        ),
-    ],
-];
-
-jsonSuccess(['featured' => $featured, 'rows' => $rows]);

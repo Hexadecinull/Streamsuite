@@ -37,14 +37,27 @@ class TMDB {
         $cached = $this->getCache($cacheKey);
         if ($cached !== null) return $cached;
 
-        $ctx = stream_context_create([
-            'http' => [
-                'timeout'    => 10,
-                'user_agent' => 'StreamSuite/1.0 (+https://streamsuite.ct.ws)',
-            ],
-        ]);
-        $raw = @file_get_contents($url, false, $ctx);
-        if ($raw === false) return [];
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => 10,
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_USERAGENT      => 'StreamSuite/1.0 (+https://streamsuite.ct.ws)',
+            ]);
+            $raw = curl_exec($ch);
+            curl_close($ch);
+            if ($raw === false) return [];
+        } else {
+            $ctx = stream_context_create([
+                'http' => [
+                    'timeout'    => 10,
+                    'user_agent' => 'StreamSuite/1.0 (+https://streamsuite.ct.ws)',
+                ],
+            ]);
+            $raw = @file_get_contents($url, false, $ctx);
+            if ($raw === false) return [];
+        }
 
         $data = json_decode($raw, true) ?? [];
         $ttl  = $isTrending ? $this->trendingTTL : $this->cacheTTL;

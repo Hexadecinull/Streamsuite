@@ -22,9 +22,20 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/tmdb.php';
 require_once __DIR__ . '/../includes/response.php';
 
-$db         = getDB();
 $guestToken = getGuestToken();
 $userId     = getAuthUserId();
+
+try {
+    $db = getDB();
+} catch (Throwable) {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (isset($_GET['catalog_id'])) {
+            jsonSuccess(['in_favorites' => false]);
+        }
+        jsonSuccess(['results' => []]);
+    }
+    jsonError('Database unavailable', 503);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['catalog_id'])) {

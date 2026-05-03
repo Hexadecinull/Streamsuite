@@ -26,29 +26,46 @@ $catalogId = sanitizeInt($_GET['catalog_id'] ?? 0, 1);
 $seasonNum = sanitizeInt($_GET['season']     ?? 1, 1, 100);
 if (!$catalogId) jsonError('Missing catalog_id', 422);
 
-$db   = getDB();
-$stmt = $db->prepare('SELECT tmdb_id FROM catalog WHERE id = ?');
-$stmt->execute([$catalogId]);
-$catalog = $stmt->fetch();
-if (!$catalog) jsonError('Not found', 404);
+$tmdbId = $catalogId;
+
+try {
+    $db   = getDB();
+    $stmt = $db->prepare('SELECT tmdb_id FROM catalog WHERE id = ? LIMIT 1');
+    $stmt->execute([$catalogId]);
+    $catalog = $stmt->fetch();
+
+    if (!$catalog) {
+        $stmt2 = $db->prepare('SELECT tmdb_id FROM catalog WHERE tmdb_id = ? LIMIT 1');
+        $stmt2->execute([$catalogId]);
+        $catalog = $stmt2->fetch();
+    }
+
+    if ($catalog) $tmdbId = (int) $catalog['tmdb_id'];
+} catch (Throwable) {
+    $db = null;
+}
 
 $guestToken = getGuestToken();
 $userId     = getAuthUserId();
 
 $tmdb = new TMDB(TMDB_API_KEY);
-$data = $tmdb->tvSeason((int) $catalog['tmdb_id'], $seasonNum);
+$data = $tmdb->tvSeason($tmdbId, $seasonNum);
 
-$progressStmt = $db->prepare(
-    'SELECT episode_id, progress_sec, duration_sec, percent
-     FROM watch_history
-     WHERE catalog_id = ? AND (user_id = ? OR guest_token = ?)'
-);
-$progressStmt->execute([$catalogId, $userId, $guestToken]);
 $progressMap = [];
-foreach ($progressStmt->fetchAll() as $row) {
-    if ($row['episode_id']) {
-        $progressMap[(int) $row['episode_id']] = $row;
-    }
+if ($db !== null) {
+    try {
+        $progressStmt = $db->prepare(
+            'SELECT episode_id, progress_sec, duration_sec, percent
+             FROM watch_history
+             WHERE catalog_id = ? AND (user_id = ? OR guest_token = ?)'
+        );
+        $progressStmt->execute([$catalogId, $userId, $guestToken]);
+        foreach ($progressStmt->fetchAll() as $row) {
+            if ($row['episode_id']) {
+                $progressMap[(int) $row['episode_id']] = $row;
+            }
+        }
+    } catch (Throwable) {}
 }
 
 $episodes = array_map(function (array $ep) use ($tmdb, $progressMap): array {
