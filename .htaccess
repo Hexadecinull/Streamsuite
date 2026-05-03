@@ -64,7 +64,7 @@ RewriteRule ^([a-z0-9\-]+)/?$ $1.php [L,QSA]
                    https://multiembed.mov https://www.2embed.cc https://embed.su \
                    https://www.youtube.com https://www.youtube-nocookie.com; \
          connect-src 'self'; \
-         font-src 'self' https://fonts.bunny.net https://api.fontshare.com; \
+         font-src 'self' https://fonts.bunny.net https://api.fontshare.com https://cdn.fontshare.com; \
          object-src 'none'; \
          base-uri 'self'; \
          form-action 'self'"
