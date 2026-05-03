@@ -23,10 +23,14 @@ const DetailPage = {
     async init() {
         const params = new URLSearchParams(window.location.search);
         this.itemId = params.get('id');
+        const typeHint = params.get('type') || '';
         if (!this.itemId) return;
 
         try {
-            const data = await Api.get(`/detail.php?id=${this.itemId}`);
+            const url = typeHint
+                ? `/detail.php?id=${this.itemId}&type=${typeHint}`
+                : `/detail.php?id=${this.itemId}`;
+            const data = await Api.get(url);
             this.mediaType = data.media_type;
             this.renderMain(data);
             this.renderCast(data.cast);
@@ -212,7 +216,7 @@ const DetailPage = {
 
     renderCard(item) {
         return `
-            <a href="/detail?id=${item.id}" class="card">
+            <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">
                 <div class="card-poster">
                     <img data-src="${item.poster_url}"
                          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"

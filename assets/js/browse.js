@@ -128,7 +128,7 @@ const BrowsePage = {
     renderCard(item) {
         const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
         return `
-            <a href="/detail?id=${item.id}" class="card">
+            <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">
                 <div class="card-poster">
                     <img data-src="${this.escapeHtml(item.poster_url)}"
                          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"

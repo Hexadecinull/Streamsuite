@@ -53,8 +53,8 @@ require_once __DIR__ . '/includes/head.php';
         </div>
         <iframe id="player-frame"
                 allowfullscreen
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"></iframe>
+                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                sandbox="allow-scripts allow-forms allow-presentation allow-pointer-lock"></iframe>
     </div>
 
     <div class="player-toolbar">

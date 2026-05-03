@@ -27,8 +27,8 @@ $type      = $_GET['type'] ?? '';
 $season    = sanitizeInt($_GET['season']  ?? 0, 0, 50);
 $episode   = sanitizeInt($_GET['episode'] ?? 0, 0, 200);
 
-if (!$catalogId)                            jsonError('Missing catalog_id', 422);
-if (!in_array($type, ['movie', 'tv'], true)) jsonError('Invalid type', 422);
+if (!$catalogId)                              jsonError('Missing catalog_id', 422);
+if (!in_array($type, ['movie', 'tv'], true))  jsonError('Invalid type', 422);
 if ($type === 'tv' && (!$season || !$episode)) jsonError('Season and episode required for TV', 422);
 
 $tmdbId = $catalogId;
@@ -40,9 +40,15 @@ try {
     $catalog = $stmt->fetch();
 
     if (!$catalog) {
-        $stmt2 = $db->prepare('SELECT tmdb_id FROM catalog WHERE tmdb_id = ? LIMIT 1');
-        $stmt2->execute([$catalogId]);
+        $stmt2 = $db->prepare('SELECT tmdb_id FROM catalog WHERE tmdb_id = ? AND media_type = ? LIMIT 1');
+        $stmt2->execute([$catalogId, $type]);
         $catalog = $stmt2->fetch();
+    }
+
+    if (!$catalog) {
+        $stmt3 = $db->prepare('SELECT tmdb_id FROM catalog WHERE tmdb_id = ? LIMIT 1');
+        $stmt3->execute([$catalogId]);
+        $catalog = $stmt3->fetch();
     }
 
     if ($catalog) {
@@ -50,69 +56,29 @@ try {
     }
 } catch (Throwable) {}
 
-const EMBED_PROVIDERS = [
-    'vidsrc'     => ['movie' => 'https://vidsrc.to/embed/movie/{tmdb_id}',
-                     'tv'    => 'https://vidsrc.to/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'VidSrc', 'priority' => 1],
-    'vidsrc2'    => ['movie' => 'https://vidsrc.me/embed/movie?tmdb={tmdb_id}',
-                     'tv'    => 'https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}',
-                     'label' => 'VidSrc 2', 'priority' => 2],
-    'autoembed'  => ['movie' => 'https://autoembed.cc/movie/tmdb/{tmdb_id}',
-                     'tv'    => 'https://autoembed.cc/tv/tmdb/{tmdb_id}-{season}-{episode}',
-                     'label' => 'AutoEmbed', 'priority' => 3],
-    'superembed' => ['movie' => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1',
-                     'tv'    => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}',
-                     'label' => 'SuperEmbed', 'priority' => 4],
-    '2embed'     => ['movie' => 'https://www.2embed.cc/embed/{tmdb_id}',
-                     'tv'    => 'https://www.2embed.cc/embedtv/{tmdb_id}&s={season}&e={episode}',
-                     'label' => '2Embed', 'priority' => 5],
+$providers = [
     'embedsu'    => ['movie' => 'https://embed.su/embed/movie/{tmdb_id}',
                      'tv'    => 'https://embed.su/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'Embed.su', 'priority' => 6],
+                     'label' => 'Server 1', 'priority' => 1],
+    'vidsrcxyz'  => ['movie' => 'https://vidsrc.xyz/embed/movie/{tmdb_id}',
+                     'tv'    => 'https://vidsrc.xyz/embed/tv/{tmdb_id}/{season}/{episode}',
+                     'label' => 'Server 2', 'priority' => 2],
+    'autoembed'  => ['movie' => 'https://autoembed.cc/movie/tmdb/{tmdb_id}',
+                     'tv'    => 'https://autoembed.cc/tv/tmdb/{tmdb_id}-{season}-{episode}',
+                     'label' => 'Server 3', 'priority' => 3],
+    'vidsrc2'    => ['movie' => 'https://vidsrc.me/embed/movie?tmdb={tmdb_id}',
+                     'tv'    => 'https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}',
+                     'label' => 'Server 4', 'priority' => 4],
+    'superembed' => ['movie' => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1',
+                     'tv'    => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}',
+                     'label' => 'Server 5', 'priority' => 5],
+    '2embed'     => ['movie' => 'https://www.2embed.cc/embed/{tmdb_id}',
+                     'tv'    => 'https://www.2embed.cc/embedtv/{tmdb_id}&s={season}&e={episode}',
+                     'label' => 'Server 6', 'priority' => 6],
 ];
 
 $sources = [];
-foreach (EMBED_PROVIDERS as $key => $provider) {
-    $template = $type === 'tv' ? $provider['tv'] : $provider['movie'];
-    $url      = str_replace(
-        ['{tmdb_id}', '{season}', '{episode}'],
-        [$tmdbId,     $season,    $episode],
-        $template
-    );
-    $sources[] = [
-        'id'       => $key,
-        'label'    => $provider['label'],
-        'url'      => $url,
-        'priority' => $provider['priority'],
-    ];
-}
-
-usort($sources, fn ($a, $b) => $a['priority'] <=> $b['priority']);
-jsonSuccess(['sources' => $sources]);
-
-const EMBED_PROVIDERS = [
-    'vidsrc'     => ['movie' => 'https://vidsrc.to/embed/movie/{tmdb_id}',
-                     'tv'    => 'https://vidsrc.to/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'VidSrc', 'priority' => 1],
-    'vidsrc2'    => ['movie' => 'https://vidsrc.me/embed/movie?tmdb={tmdb_id}',
-                     'tv'    => 'https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}',
-                     'label' => 'VidSrc 2', 'priority' => 2],
-    'autoembed'  => ['movie' => 'https://autoembed.cc/movie/tmdb/{tmdb_id}',
-                     'tv'    => 'https://autoembed.cc/tv/tmdb/{tmdb_id}-{season}-{episode}',
-                     'label' => 'AutoEmbed', 'priority' => 3],
-    'superembed' => ['movie' => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1',
-                     'tv'    => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}',
-                     'label' => 'SuperEmbed', 'priority' => 4],
-    '2embed'     => ['movie' => 'https://www.2embed.cc/embed/{tmdb_id}',
-                     'tv'    => 'https://www.2embed.cc/embedtv/{tmdb_id}&s={season}&e={episode}',
-                     'label' => '2Embed', 'priority' => 5],
-    'embedsu'    => ['movie' => 'https://embed.su/embed/movie/{tmdb_id}',
-                     'tv'    => 'https://embed.su/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'Embed.su', 'priority' => 6],
-];
-
-$sources = [];
-foreach (EMBED_PROVIDERS as $key => $provider) {
+foreach ($providers as $key => $provider) {
     $template = $type === 'tv' ? $provider['tv'] : $provider['movie'];
     $url      = str_replace(
         ['{tmdb_id}', '{season}', '{episode}'],

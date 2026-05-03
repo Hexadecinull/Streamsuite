@@ -98,7 +98,7 @@ const HomePage = {
                 <div class="featured-actions">
                     <a href="/watch?id=${item.id}&type=${item.media_type}" class="btn btn-primary">&#9654; Watch Now</a>
                     <button class="btn btn-secondary" id="featured-fav-btn">+ Favorites</button>
-                    <a href="/detail?id=${item.id}" class="btn btn-ghost">&#9432; Details</a>
+                    <a href="/detail?id=${item.id}&type=${item.media_type}" class="btn btn-ghost">&#9432; Details</a>
                 </div>
             </div>`;
 
@@ -151,7 +151,7 @@ const HomePage = {
     renderCard(item) {
         const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
         return `
-            <a href="/detail?id=${item.id}" class="card">
+            <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">
                 <div class="card-poster">
                     <img data-src="${this.escapeHtml(item.poster_url)}"
                          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"

@@ -73,13 +73,24 @@ class SourceManager {
 
         const loading = document.getElementById('player-loading');
         if (loading) loading.style.display = 'flex';
-        this.iframe.src = '';
+        this.iframe.src = 'about:blank';
+
+        const timeoutId = setTimeout(() => {
+            if (index + 1 < this.sources.length) {
+                this.load(index + 1);
+            } else {
+                if (loading) loading.style.display = 'none';
+                const errEl = document.getElementById('player-error');
+                if (errEl) errEl.style.display = 'flex';
+            }
+        }, 12000);
 
         requestAnimationFrame(() => {
             this.iframe.src = this.current().url;
         });
 
         this.iframe.addEventListener('load', () => {
+            clearTimeout(timeoutId);
             if (loading) loading.style.display = 'none';
         }, { once: true });
 
@@ -133,7 +144,7 @@ const Player = {
 
             const [sourceData, titleData] = await Promise.all([
                 Api.get(sourceParams),
-                Api.get(`/detail.php?id=${catalogId}`),
+                Api.get(`/detail.php?id=${catalogId}&type=${type}`),
             ]);
 
             const titleEl = document.getElementById('player-title');

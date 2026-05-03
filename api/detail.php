@@ -23,17 +23,28 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/tmdb.php';
 require_once __DIR__ . '/../includes/response.php';
 
-$id = trim($_GET['id'] ?? '');
+$id   = trim($_GET['id'] ?? '');
+$hint = trim($_GET['type'] ?? '');
 if (!$id || !ctype_digit($id)) jsonError('Missing or invalid ID', 422);
 $id = (int) $id;
+if ($hint !== 'movie' && $hint !== 'tv') $hint = '';
 
 $tmdb = new TMDB(TMDB_API_KEY);
 
 try {
     $db = getDB();
 
-    $stmt = $db->prepare('SELECT * FROM catalog WHERE tmdb_id = ?');
-    $stmt->execute([$id]);
+    if ($hint !== '') {
+        $stmt = $db->prepare(
+            'SELECT * FROM catalog WHERE tmdb_id = ? AND media_type = ? ORDER BY cached_at DESC LIMIT 1'
+        );
+        $stmt->execute([$id, $hint]);
+    } else {
+        $stmt = $db->prepare(
+            'SELECT * FROM catalog WHERE tmdb_id = ? ORDER BY cached_at DESC LIMIT 1'
+        );
+        $stmt->execute([$id]);
+    }
     $local = $stmt->fetch();
 
     if ($local && !empty($local['title'])) {
@@ -62,12 +73,16 @@ try {
     $db = null;
 }
 
-$tmdbData  = $tmdb->movie($id);
-$mediaType = 'movie';
-
-if (empty($tmdbData['title'])) {
+if ($hint === 'tv') {
     $tmdbData  = $tmdb->tv($id);
     $mediaType = 'tv';
+} else {
+    $tmdbData  = $tmdb->movie($id);
+    $mediaType = 'movie';
+    if (empty($tmdbData['title'])) {
+        $tmdbData  = $tmdb->tv($id);
+        $mediaType = 'tv';
+    }
 }
 
 if (empty($tmdbData) || (isset($tmdbData['status_code']) && $tmdbData['status_code'] !== 1)) {
