@@ -25,14 +25,7 @@ set_exception_handler(function (Throwable $e): void {
         http_response_code(500);
         header('Content-Type: application/json; charset=utf-8');
     }
-    $msg = defined('APP_ENV') && APP_ENV === 'development'
-        ? $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine()
-        : 'Internal server error';
+    $msg = $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine();
     echo json_encode(['success' => false, 'error' => $msg]);
     exit;
-});
-
-set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
-    if (!(error_reporting() & $severity)) return false;
-    throw new ErrorException($message, 0, $severity, $file, $line);
 });
