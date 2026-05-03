@@ -52,3 +52,4 @@ jobs:
             LICENSE
             docs/**
             includes/config.php
+            api/diag.php
