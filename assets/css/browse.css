@@ -11,11 +11,12 @@
 
 .browse-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
 }
 
 .browse-header h1 {
@@ -177,14 +178,5 @@
 
 .trending-tab:hover { color: var(--c-text); border-color: var(--c-border-2); }
 .trending-tab.active { background: var(--c-accent-dim); border-color: var(--c-accent); color: var(--c-accent); }
-
-.browse-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-    padding-top: 1.5rem;
-}
 
 .detail-back { display: inline-flex; margin-bottom: 1.25rem; }

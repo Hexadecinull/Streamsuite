@@ -279,6 +279,5 @@
     text-decoration: none;
     cursor: pointer;
     margin-bottom: 1.25rem;
-    display: inline-flex;
 }
 .back-btn:hover { color: var(--c-text); border-color: var(--c-border-2); background: var(--c-bg-4); }
