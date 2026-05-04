@@ -60,15 +60,30 @@ const App = {
 
         const openPanel = (panel) => {
             document.getElementById('mobile-drawer').classList.remove('open');
-            backdrop.classList.add('open');
-            panel.classList.add('open');
-            panel.focus();
+            panel.style.display = 'flex';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    backdrop.classList.add('open');
+                    panel.classList.add('open');
+                    panel.focus();
+                });
+            });
         };
 
         const closeAll = () => {
             backdrop.classList.remove('open');
-            if (settingsPanel) settingsPanel.classList.remove('open');
-            if (accountPanel)  accountPanel.classList.remove('open');
+            if (settingsPanel) {
+                settingsPanel.classList.remove('open');
+                settingsPanel.addEventListener('transitionend', () => {
+                    if (!settingsPanel.classList.contains('open')) settingsPanel.style.display = 'none';
+                }, { once: true });
+            }
+            if (accountPanel) {
+                accountPanel.classList.remove('open');
+                accountPanel.addEventListener('transitionend', () => {
+                    if (!accountPanel.classList.contains('open')) accountPanel.style.display = 'none';
+                }, { once: true });
+            }
         };
 
         if (settingsBtn)    settingsBtn.addEventListener('click',    () => openPanel(settingsPanel));

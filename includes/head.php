@@ -21,7 +21,7 @@ if (!isset($pageTitle))       $pageTitle       = 'StreamSuite';
 if (!isset($pageDescription)) $pageDescription = 'Stream everything. Own nothing. Pay nothing.';
 ?>
 <!DOCTYPE html>
-<html lang="en" data-theme="obsidian">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
