@@ -17,60 +17,61 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-$pageTitle = 'Watch — StreamSuite';
+$pageTitle = 'Watch';
 $extraCss  = ['/assets/css/player.css'];
 require_once __DIR__ . '/includes/head.php';
 ?>
 
 <header class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
         <a href="/" class="logo">
             <img src="/assets/img/logo-mark.svg" alt="" class="logo-mark">
             <span>StreamSuite</span>
         </a>
-        <a id="back-to-detail" href="/" class="btn btn-ghost">&#8592; Back</a>
+        <div style="flex:1;min-width:0;overflow:hidden;">
+            <div id="player-title-nav" style="font-size:0.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-2);"></div>
+            <div id="episode-label-nav" style="font-size:0.72rem;color:var(--c-accent);font-family:var(--font-mono);"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+            <a id="back-to-detail" href="/" class="btn btn-ghost btn-sm">&#8592; Back</a>
+            <a href="/" class="btn btn-ghost btn-sm" style="color:var(--c-text-3);">&#8962;</a>
+        </div>
     </div>
 </header>
 
 <main class="player-page">
-    <div class="player-header">
-        <h1 id="player-title" class="text-l">Loading&#8230;</h1>
-        <div id="episode-label" class="player-episode-label"></div>
-    </div>
-
     <div class="player-frame-wrapper">
         <div id="player-loading" class="player-loading">
             <div class="player-loading-spinner"></div>
+            <div class="player-loading-label" id="player-loading-label">Loading&#8230;</div>
         </div>
-        <div id="player-error" style="
-            display:none;position:absolute;inset:0;background:#000;
-            align-items:center;justify-content:center;text-align:center;padding:2rem;
-            color:var(--c-text-2);flex-direction:column;gap:1rem;">
-            <p style="font-size:1.1rem;font-weight:600;">Failed to load</p>
-            <p style="color:var(--c-text-3);font-size:0.85rem;">
-                Try a different server below, or reload the page.
-            </p>
+        <div id="player-error" class="player-error">
+            <div class="player-error-icon">&#9634;</div>
+            <div class="player-error-title">Playback failed</div>
+            <div class="player-error-desc">All servers failed to load. Try a different server below or reload the page.</div>
         </div>
         <iframe id="player-frame"
                 allowfullscreen
-                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                allow="fullscreen; autoplay"
                 sandbox="allow-scripts allow-forms allow-presentation allow-pointer-lock"></iframe>
     </div>
 
-    <div class="player-toolbar">
-        <div class="server-selector">
-            <span class="server-label">Server</span>
-            <div id="server-buttons" class="server-buttons"></div>
+    <div class="player-ui">
+        <div class="player-toolbar">
+            <div class="server-selector">
+                <span class="server-label">Server</span>
+                <div id="server-buttons" class="server-buttons"></div>
+            </div>
+            <div class="player-actions">
+                <button id="reload-btn" class="btn btn-secondary btn-sm">&#8635; Retry</button>
+            </div>
         </div>
-        <div class="player-actions">
-            <button id="reload-btn" class="btn btn-secondary btn-sm">&#8635; Reload</button>
-            <a href="/" class="btn btn-ghost btn-sm" style="color:var(--c-text-3);">&#8962; Home</a>
-        </div>
-    </div>
 
-    <div id="episode-nav" class="episode-nav">
-        <a id="episode-prev" href="#" class="episode-nav-prev">&#8592; Previous Episode</a>
-        <a id="episode-next" href="#" class="episode-nav-next">Next Episode &#8594;</a>
+        <div id="episode-nav" class="episode-nav" style="display:none;">
+            <a id="episode-prev" href="#" class="episode-nav-btn" hidden>&#8592; Previous</a>
+            <span style="font-size:0.8rem;color:var(--c-text-3);font-family:var(--font-mono);" id="episode-label-bar"></span>
+            <a id="episode-next" href="#" class="episode-nav-btn" hidden>Next &#8594;</a>
+        </div>
     </div>
 </main>
 

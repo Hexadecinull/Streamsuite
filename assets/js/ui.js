@@ -189,3 +189,20 @@ const Favorites = {
 document.addEventListener('DOMContentLoaded', () => {
     LazyLoader.init();
 });
+
+const AgeBadge = {
+    get(voteAverage) {
+        const prefs = (function() {
+            try { return JSON.parse(localStorage.getItem('ss_prefs') || '{}'); }
+            catch { return {}; }
+        })();
+        if (!prefs.showAgeBadges && prefs.showAgeBadges !== undefined) return null;
+        const r = parseFloat(voteAverage) || 0;
+        if (r === 0) return null;
+        if (r >= 8.5) return { label: 'G',    cls: 'age-badge-g' };
+        if (r >= 7.0) return { label: 'PG',   cls: 'age-badge-pg' };
+        if (r >= 5.5) return { label: 'PG-13',cls: 'age-badge-pg13' };
+        if (r >= 4.0) return { label: 'R',    cls: 'age-badge-r' };
+        return { label: '18+', cls: 'age-badge-18' };
+    },
+};

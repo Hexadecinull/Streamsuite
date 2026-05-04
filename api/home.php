@@ -48,34 +48,43 @@ try {
 
     $popularMovies = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'vote_count.gte' => 50])['results'] ?? [];
     $popularTV     = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results'] ?? [];
+    $topRated      = $tmdb->discover('movie', ['sort_by' => 'vote_average.desc', 'vote_count.gte' => 500])['results'] ?? [];
+    $actionMovies  = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'with_genres' => '28'])['results'] ?? [];
+    $comedySeries  = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'with_genres' => '35'])['results'] ?? [];
 
     $validTypes    = ['movie', 'tv'];
     $trendingValid = array_values(array_filter(
         $trendingItems,
         fn ($i) => in_array($i['media_type'] ?? '', $validTypes, true)
+            && !empty($i['backdrop_path'])
+            && !empty($i['overview'])
     ));
 
-    $featured = null;
+    $featuredPool = [];
     if (!empty($trendingValid)) {
-        usort($trendingValid, fn ($a, $b) => ($b['vote_average'] ?? 0) <=> ($a['vote_average'] ?? 0));
-        $pool         = array_slice($trendingValid, 0, 5);
-        $featuredItem = $pool[0];
-        $featured     = [
-            'id'           => (int) $featuredItem['id'],
-            'tmdb_id'      => (int) $featuredItem['id'],
-            'media_type'   => $featuredItem['media_type'],
-            'title'        => $featuredItem['media_type'] === 'movie'
-                ? ($featuredItem['title'] ?? '')
-                : ($featuredItem['name']  ?? ''),
-            'overview'     => $featuredItem['overview']     ?? '',
-            'poster_url'   => $tmdb->posterUrl($featuredItem['poster_path']   ?? '', 'w500'),
-            'backdrop_url' => $tmdb->backdropUrl($featuredItem['backdrop_path'] ?? ''),
-            'rating'       => round((float) ($featuredItem['vote_average'] ?? 0), 1),
-            'year'         => substr(
-                $featuredItem['release_date'] ?? $featuredItem['first_air_date'] ?? '',
-                0, 4
-            ),
-        ];
+        $sorted = $trendingValid;
+        usort($sorted, fn ($a, $b) => ($b['vote_average'] ?? 0) <=> ($a['vote_average'] ?? 0));
+        $pool = array_slice($sorted, 0, 8);
+        shuffle($pool);
+        foreach (array_slice($pool, 0, 5) as $featuredItem) {
+            $featuredPool[] = [
+                'id'           => (int) $featuredItem['id'],
+                'tmdb_id'      => (int) $featuredItem['id'],
+                'media_type'   => $featuredItem['media_type'],
+                'title'        => $featuredItem['media_type'] === 'movie'
+                    ? ($featuredItem['title'] ?? '')
+                    : ($featuredItem['name']  ?? ''),
+                'overview'     => $featuredItem['overview']     ?? '',
+                'poster_url'   => $tmdb->posterUrl($featuredItem['poster_path']   ?? '', 'w500'),
+                'backdrop_url' => $tmdb->backdropUrl($featuredItem['backdrop_path'] ?? ''),
+                'rating'       => round((float) ($featuredItem['vote_average'] ?? 0), 1),
+                'vote_average' => (float) ($featuredItem['vote_average'] ?? 0),
+                'year'         => substr(
+                    $featuredItem['release_date'] ?? $featuredItem['first_air_date'] ?? '',
+                    0, 4
+                ),
+            ];
+        }
     }
 
     $rows = [
@@ -103,9 +112,42 @@ try {
                 array_slice($popularTV, 0, 12)
             ),
         ],
+        [
+            'id'    => 'top_rated',
+            'title' => 'Top Rated',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'movie'),
+                array_slice($topRated, 0, 12)
+            ),
+        ],
+        [
+            'id'    => 'action',
+            'title' => 'Action & Adventure',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'movie'),
+                array_slice($actionMovies, 0, 12)
+            ),
+        ],
+        [
+            'id'    => 'comedy',
+            'title' => 'Comedy Series',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'tv'),
+                array_slice($comedySeries, 0, 12)
+            ),
+        ],
     ];
 
-    jsonSuccess(['featured' => $featured, 'rows' => $rows]);
+    $rows = array_values(array_filter(
+        $rows,
+        fn ($r) => count($r['items']) > 0
+    ));
+
+    jsonSuccess([
+        'featured'      => $featuredPool[0] ?? null,
+        'featured_pool' => $featuredPool,
+        'rows'          => $rows,
+    ]);
 } catch (Throwable) {
-    jsonSuccess(['featured' => null, 'rows' => []]);
+    jsonSuccess(['featured' => null, 'featured_pool' => [], 'rows' => []]);
 }

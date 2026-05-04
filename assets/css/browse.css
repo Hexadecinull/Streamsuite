@@ -156,3 +156,35 @@
     .filter-bar select,
     .filter-bar input[type="number"] { width: 100%; }
 }
+
+.trending-tabs {
+    display: flex;
+    gap: 0.35rem;
+    margin-left: auto;
+}
+
+.trending-tab {
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-3);
+    color: var(--c-text-2);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.trending-tab:hover { color: var(--c-text); border-color: var(--c-border-2); }
+.trending-tab.active { background: var(--c-accent-dim); border-color: var(--c-accent); color: var(--c-accent); }
+
+.browse-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.detail-back { display: inline-flex; margin-bottom: 1.25rem; }

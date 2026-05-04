@@ -17,22 +17,22 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-$query           = htmlspecialchars(trim($_GET['q'] ?? ''), ENT_QUOTES, 'UTF-8');
-$pageTitle       = $query ? 'Search: ' . $query : 'Search';
-$pageDescription = $query ? "Search results for \"{$query}\" on StreamSuite." : 'Search StreamSuite.';
+$pageTitle       = 'Trending';
+$pageDescription = 'What everyone is watching right now on StreamSuite.';
 $extraCss        = ['/assets/css/browse.css'];
+$activePage      = 'trending';
 require_once __DIR__ . '/includes/head.php';
 require_once __DIR__ . '/includes/nav.php';
 ?>
 
-<main id="search-page" class="container">
+<main id="trending-page" class="container">
     <div class="browse-header">
-        <a href="javascript:history.back()" class="back-btn">&#8592; Back</a>
-        <h1 class="text-2xl" id="search-query-display">Search</h1>
-    </div>
-
-    <div id="search-suggestion" style="display:none;margin-bottom:1rem;padding:0.75rem 1rem;background:var(--c-bg-3);border-radius:var(--radius-m);border:1px solid var(--c-border);font-size:0.875rem;">
-        Did you mean: <a id="suggestion-link" href="#" style="color:var(--c-accent);font-weight:600;"></a>?
+        <a href="/" class="back-btn">&#8592; Home</a>
+        <h1 class="text-2xl">&#128293; Trending</h1>
+        <div class="trending-tabs" id="trending-tabs">
+            <button class="trending-tab active" data-window="week">This Week</button>
+            <button class="trending-tab" data-window="day">Today</button>
+        </div>
     </div>
 
     <div id="browse-results" class="browse-grid"></div>
@@ -42,7 +42,7 @@ require_once __DIR__ . '/includes/nav.php';
 
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
-<script src="/assets/js/search.js"></script>
+<script src="/assets/js/trending.js"></script>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

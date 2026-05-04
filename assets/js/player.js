@@ -147,23 +147,30 @@ const Player = {
                 Api.get(`/detail.php?id=${catalogId}&type=${type}`),
             ]);
 
-            const titleEl = document.getElementById('player-title');
+            const titleEl    = document.getElementById('player-title-nav');
             if (titleEl) titleEl.textContent = titleData.title || 'Unknown';
 
             document.title = (titleData.title || 'Watch') + ' — StreamSuite';
 
             const backBtn = document.getElementById('back-to-detail');
-            if (backBtn) backBtn.href = `/detail?id=${catalogId}`;
+            if (backBtn) backBtn.href = `/detail?id=${catalogId}&type=${type}`;
 
             if (type === 'tv' && season > 0 && episode > 0) {
                 const episodeLabelEl = document.getElementById('episode-label');
                 try {
                     const epData = await Api.get(`/episodes.php?catalog_id=${catalogId}&season=${season}`);
                     const ep = epData.find(e => e.episode_number === episode);
-                    if (ep && episodeLabelEl) {
-                        episodeLabelEl.textContent = `S${String(season).padStart(2,'0')}E${String(episode).padStart(2,'0')} · ${ep.title}`;
-                    }
+                    const epLabelNav = document.getElementById('episode-label-nav');
+                    const epLabelBar = document.getElementById('episode-label-bar');
+                    const label = ep
+                        ? `S${String(season).padStart(2,'0')}E${String(episode).padStart(2,'0')} · ${ep.title}`
+                        : `S${String(season).padStart(2,'0')}E${String(episode).padStart(2,'0')}`;
+                    if (epLabelNav) epLabelNav.textContent = label;
+                    if (epLabelBar) epLabelBar.textContent = label;
                 } catch {}
+
+                const episodeNav = document.getElementById('episode-nav');
+                if (episodeNav) episodeNav.style.display = 'flex';
 
                 const prevBtn = document.getElementById('episode-prev');
                 const nextBtn = document.getElementById('episode-next');
@@ -171,14 +178,17 @@ const Player = {
                 if (prevBtn) {
                     if (episode > 1) {
                         prevBtn.href = `/watch?id=${catalogId}&type=tv&s=${season}&e=${episode - 1}`;
+                        prevBtn.hidden = false;
                     } else if (season > 1) {
                         prevBtn.href = `/watch?id=${catalogId}&type=tv&s=${season - 1}&e=1`;
+                        prevBtn.hidden = false;
                     } else {
                         prevBtn.hidden = true;
                     }
                 }
                 if (nextBtn) {
                     nextBtn.href = `/watch?id=${catalogId}&type=tv&s=${season}&e=${episode + 1}`;
+                    nextBtn.hidden = false;
                 }
             } else {
                 const episodeNav = document.getElementById('episode-nav');

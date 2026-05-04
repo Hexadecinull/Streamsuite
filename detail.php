@@ -21,59 +21,42 @@ $pageTitle       = 'Detail';
 $pageDescription = 'Watch on StreamSuite.';
 $extraCss        = ['/assets/css/detail.css'];
 require_once __DIR__ . '/includes/head.php';
+require_once __DIR__ . '/includes/nav.php';
 ?>
-
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="/" class="logo">
-            <img src="/assets/img/logo-mark.svg" alt="" class="logo-mark">
-            <span>StreamSuite</span>
-        </a>
-        <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/browse?type=movie" class="nav-link">Movies</a>
-            <a href="/browse?type=tv" class="nav-link">Series</a>
-            <a href="/browse" class="nav-link">Browse</a>
-        </nav>
-        <div class="header-actions">
-            <form class="search-bar" action="/search" method="get">
-                <input type="text" name="q" placeholder="Search&#8230;" aria-label="Search">
-                <button type="submit" class="btn btn-icon" aria-label="Search">&#9906;</button>
-            </form>
-            <button class="mobile-menu-btn btn btn-icon" aria-label="Open menu" aria-expanded="false">&#9776;</button>
-        </div>
-    </div>
-</header>
 
 <main id="detail-page">
     <div id="detail-backdrop" class="detail-backdrop"></div>
 
     <div class="container detail-container">
-        <div class="detail-poster">
-            <img id="detail-poster"
-                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"
-                 alt="">
-        </div>
-        <div class="detail-info">
-            <h1 id="detail-title" class="text-3xl"></h1>
-            <div class="detail-meta">
-                <span id="detail-year"></span>
-                <span class="rating">&#9733; <span id="detail-rating"></span></span>
-                <span id="detail-runtime"></span>
-                <span id="detail-genres"></span>
+        <a href="javascript:history.back()" class="back-btn detail-back">&#8592; Back</a>
+
+        <div class="detail-layout">
+            <div class="detail-poster">
+                <img id="detail-poster"
+                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"
+                     alt="">
             </div>
-            <p id="detail-tagline" class="tagline"></p>
-            <div class="detail-actions">
-                <a id="watch-btn" href="#" class="btn btn-primary">&#9654; Watch Now</a>
-                <button id="favorite-btn" class="btn btn-secondary">+ Favorites</button>
-                <button id="share-btn" class="btn btn-ghost">&#8599; Share</button>
+            <div class="detail-info">
+                <h1 id="detail-title" class="text-3xl"></h1>
+                <div class="detail-meta" id="detail-meta">
+                    <span id="detail-year"></span>
+                    <span class="rating">&#9733; <span id="detail-rating"></span></span>
+                    <span id="detail-runtime"></span>
+                    <span id="detail-age-badge"></span>
+                    <span id="detail-genres"></span>
+                </div>
+                <p id="detail-tagline" class="tagline"></p>
+                <div class="detail-actions">
+                    <a id="watch-btn" href="#" class="btn btn-primary">&#9654; Watch Now</a>
+                    <button id="favorite-btn" class="btn btn-secondary">+ Favorites</button>
+                    <button id="share-btn" class="btn btn-ghost">&#8599; Share</button>
+                </div>
+                <p id="detail-overview" class="overview"></p>
             </div>
-            <p id="detail-overview" class="overview"></p>
         </div>
     </div>
 
     <div class="container">
-
         <section class="detail-section cast-section">
             <h2>Cast</h2>
             <div id="cast-container" class="cast-grid"></div>
@@ -94,21 +77,8 @@ require_once __DIR__ . '/includes/head.php';
             <h2>More Like This</h2>
             <div id="related-container" class="related-grid"></div>
         </section>
-
     </div>
 </main>
-
-<div class="mobile-drawer">
-    <a href="/" class="mobile-nav-item">Home</a>
-    <a href="/browse?type=movie" class="mobile-nav-item">Movies</a>
-    <a href="/browse?type=tv" class="mobile-nav-item">Series</a>
-    <a href="/browse" class="mobile-nav-item">Browse</a>
-    <a href="/favorites" class="mobile-nav-item">Favorites</a>
-    <a href="/history" class="mobile-nav-item">History</a>
-    <a href="/settings" class="mobile-nav-item">Settings</a>
-    <hr style="border-color:var(--c-border);margin:0.5rem 0;">
-    <a href="/login" class="mobile-nav-item">Login / Register</a>
-</div>
 
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
