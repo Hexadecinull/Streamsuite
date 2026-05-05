@@ -1,0 +1,27 @@
+/*
+ * StreamSuite — Free, open-source streaming website
+ * Copyright (C) 2026  StreamSuite Contributors
+ * (GPL-3.0 license)
+ */
+
+.anime-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--c-bg-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-l);
+}
+
+.anime-hero-text {
+    font-size: 0.875rem;
+    color: var(--c-text-2);
+    max-width: 480px;
+    line-height: 1.6;
+}
+
+.anime-tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; }

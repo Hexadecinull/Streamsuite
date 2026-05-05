@@ -90,6 +90,7 @@ const SearchPage = {
     },
 
     renderCard(item) {
+        const badge = typeof AgeBadge !== 'undefined' ? AgeBadge.get(item.rating) : null;
         return `
             <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">
                 <div class="card-poster">
@@ -100,8 +101,9 @@ const SearchPage = {
                 <div class="card-body">
                     <div class="card-title">${this.escapeHtml(item.title)}</div>
                     <div class="card-meta">
-                        <span class="rating">★ ${item.rating?.toFixed(1) || '—'}</span>
+                        <span class="rating">&#9733; ${item.rating?.toFixed(1) || '—'}</span>
                         <span>${item.year || ''}</span>
+                        ${badge ? `<span class="age-badge ${badge.cls}">${badge.label}</span>` : ''}
                         <span class="badge">${item.media_type === 'tv' ? 'Series' : 'Movie'}</span>
                     </div>
                 </div>

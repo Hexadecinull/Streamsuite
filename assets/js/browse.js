@@ -31,9 +31,40 @@ const BrowsePage = {
     init() {
         this.parseUrlParams();
         this.syncFormToFilters();
+        this.updateHeading();
         this.setupFilters();
+        this.setupBrowseSearch();
         this.loadPage(1);
         this.setupInfiniteScroll();
+    },
+
+    updateHeading() {
+        const h = document.getElementById('browse-heading');
+        if (!h) return;
+        if (this.filters.type === 'movie') h.textContent = 'Movies';
+        else if (this.filters.type === 'tv') h.textContent = 'Series';
+        else h.textContent = 'Browse';
+    },
+
+    setupBrowseSearch() {
+        const input = document.getElementById('browse-search-input');
+        if (!input) return;
+        let timer = null;
+        input.addEventListener('input', () => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                const q = input.value.trim();
+                if (q.length >= 2) {
+                    window.location.href = '/search?q=' + encodeURIComponent(q);
+                }
+            }, 500);
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const q = input.value.trim();
+                if (q) window.location.href = '/search?q=' + encodeURIComponent(q);
+            }
+        });
     },
 
     parseUrlParams() {
@@ -127,6 +158,7 @@ const BrowsePage = {
 
     renderCard(item) {
         const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
+        const badge  = typeof AgeBadge !== 'undefined' ? AgeBadge.get(item.rating) : null;
         return `
             <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">
                 <div class="card-poster">
@@ -139,6 +171,7 @@ const BrowsePage = {
                     <div class="card-meta">
                         <span class="rating">&#9733; ${rating}</span>
                         <span>${item.year || ''}</span>
+                        ${badge ? `<span class="age-badge ${badge.cls}">${badge.label}</span>` : ''}
                     </div>
                 </div>
             </a>`;

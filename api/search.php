@@ -67,8 +67,9 @@ $results = array_values(array_map(
 ));
 
 jsonSuccess([
-    'query'       => $query,
-    'page'        => (int) ($data['page']        ?? $page),
-    'total_pages' => (int) ($data['total_pages'] ?? 1),
-    'results'     => $results,
+    'query'         => $query,
+    'page'          => (int) ($data['page']          ?? $page),
+    'total_pages'   => (int) ($data['total_pages']   ?? 1),
+    'total_results' => (int) ($data['total_results'] ?? count($results)),
+    'results'       => $results,
 ]);

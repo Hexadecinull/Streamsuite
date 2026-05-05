@@ -57,28 +57,52 @@ try {
 } catch (Throwable) {}
 
 $providers = [
-    'embedsu'    => ['movie' => 'https://embed.su/embed/movie/{tmdb_id}',
-                     'tv'    => 'https://embed.su/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'Server 1', 'priority' => 1],
-    'vidsrcxyz'  => ['movie' => 'https://vidsrc.xyz/embed/movie/{tmdb_id}',
-                     'tv'    => 'https://vidsrc.xyz/embed/tv/{tmdb_id}/{season}/{episode}',
-                     'label' => 'Server 2', 'priority' => 2],
-    'autoembed'  => ['movie' => 'https://autoembed.cc/movie/tmdb/{tmdb_id}',
-                     'tv'    => 'https://autoembed.cc/tv/tmdb/{tmdb_id}-{season}-{episode}',
-                     'label' => 'Server 3', 'priority' => 3],
-    'vidsrc2'    => ['movie' => 'https://vidsrc.me/embed/movie?tmdb={tmdb_id}',
-                     'tv'    => 'https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}',
-                     'label' => 'Server 4', 'priority' => 4],
-    'superembed' => ['movie' => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1',
-                     'tv'    => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}',
-                     'label' => 'Server 5', 'priority' => 5],
-    '2embed'     => ['movie' => 'https://www.2embed.cc/embed/{tmdb_id}',
-                     'tv'    => 'https://www.2embed.cc/embedtv/{tmdb_id}&s={season}&e={episode}',
-                     'label' => 'Server 6', 'priority' => 6],
+    [
+        'id'       => 'vidsrc_cc',
+        'label'    => 'Server 1',
+        'movie'    => "https://vidsrc.cc/v2/embed/movie/{tmdb_id}",
+        'tv'       => "https://vidsrc.cc/v2/embed/tv/{tmdb_id}/{season}/{episode}",
+        'priority' => 1,
+    ],
+    [
+        'id'       => 'vidlink',
+        'label'    => 'Server 2',
+        'movie'    => "https://vidlink.pro/movie/{tmdb_id}",
+        'tv'       => "https://vidlink.pro/tv/{tmdb_id}/{season}/{episode}",
+        'priority' => 2,
+    ],
+    [
+        'id'       => 'embed_su',
+        'label'    => 'Server 3',
+        'movie'    => "https://embed.su/embed/movie/{tmdb_id}",
+        'tv'       => "https://embed.su/embed/tv/{tmdb_id}/{season}/{episode}",
+        'priority' => 3,
+    ],
+    [
+        'id'       => 'vidsrc_me',
+        'label'    => 'Server 4',
+        'movie'    => "https://vidsrc.me/embed/movie?tmdb={tmdb_id}",
+        'tv'       => "https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}",
+        'priority' => 4,
+    ],
+    [
+        'id'       => 'moviesapi',
+        'label'    => 'Server 5',
+        'movie'    => "https://moviesapi.club/movie/{tmdb_id}",
+        'tv'       => "https://moviesapi.club/tv/{tmdb_id}-{season}-{episode}",
+        'priority' => 5,
+    ],
+    [
+        'id'       => 'multiembed',
+        'label'    => 'Server 6',
+        'movie'    => "https://multiembed.mov/?video_id={tmdb_id}&tmdb=1",
+        'tv'       => "https://multiembed.mov/?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}",
+        'priority' => 6,
+    ],
 ];
 
 $sources = [];
-foreach ($providers as $key => $provider) {
+foreach ($providers as $provider) {
     $template = $type === 'tv' ? $provider['tv'] : $provider['movie'];
     $url      = str_replace(
         ['{tmdb_id}', '{season}', '{episode}'],
@@ -86,12 +110,11 @@ foreach ($providers as $key => $provider) {
         $template
     );
     $sources[] = [
-        'id'       => $key,
+        'id'       => $provider['id'],
         'label'    => $provider['label'],
         'url'      => $url,
         'priority' => $provider['priority'],
     ];
 }
 
-usort($sources, fn ($a, $b) => $a['priority'] <=> $b['priority']);
 jsonSuccess(['sources' => $sources]);

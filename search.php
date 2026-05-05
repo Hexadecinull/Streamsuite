@@ -35,14 +35,15 @@ require_once __DIR__ . '/includes/nav.php';
         Did you mean: <a id="suggestion-link" href="#" style="color:var(--c-accent);font-weight:600;"></a>?
     </div>
 
-    <div id="browse-results" class="browse-grid"></div>
-    <div id="browse-loader" class="browse-loader" style="display:none;"></div>
+    <div id="search-results" class="browse-grid"></div>
+    <div id="search-loader" class="browse-loader" style="display:none;"></div>
     <div id="scroll-sentinel" style="height:20px;"></div>
 </main>
 
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/search.js"></script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

@@ -32,7 +32,7 @@
     display: grid;
     grid-template-columns: 220px 1fr;
     gap: 2.5rem;
-    margin-top: -140px;
+    margin-top: -60px;
     position: relative;
     z-index: 2;
     align-items: start;
@@ -280,10 +280,11 @@
     gap: 1rem;
 }
 
-.btn-favorited {
-    background: var(--c-accent-dim);
-    border-color: var(--c-accent);
-    color: var(--c-accent);
+.detail-back-row {
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
 }
 
 @media (max-width: 900px) {

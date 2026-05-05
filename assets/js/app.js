@@ -48,71 +48,80 @@ const App = {
     },
 
     setupPanels() {
-        const backdrop       = document.getElementById('overlay-backdrop');
-        const settingsPanel  = document.getElementById('settings-panel');
-        const accountPanel   = document.getElementById('account-panel');
-        const settingsBtn    = document.getElementById('settings-btn');
-        const accountBtn     = document.getElementById('account-btn');
-        const settingsClose  = document.getElementById('settings-close');
-        const accountClose   = document.getElementById('account-close');
-        const mobileSettings = document.getElementById('mobile-settings-btn');
-        const mobileAccount  = document.getElementById('mobile-account-btn');
-
-        const openPanel = (panel) => {
-            document.getElementById('mobile-drawer').classList.remove('open');
-            panel.style.display = 'flex';
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    backdrop.classList.add('open');
-                    panel.classList.add('open');
-                    panel.focus();
-                });
-            });
+        const openModal = (overlay) => {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeAll();
+            }, { once: false });
         };
 
         const closeAll = () => {
-            backdrop.classList.remove('open');
-            if (settingsPanel) {
-                settingsPanel.classList.remove('open');
-                settingsPanel.addEventListener('transitionend', () => {
-                    if (!settingsPanel.classList.contains('open')) settingsPanel.style.display = 'none';
-                }, { once: true });
-            }
-            if (accountPanel) {
-                accountPanel.classList.remove('open');
-                accountPanel.addEventListener('transitionend', () => {
-                    if (!accountPanel.classList.contains('open')) accountPanel.style.display = 'none';
-                }, { once: true });
-            }
+            ['settings-overlay', 'account-overlay'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            const drawer = document.getElementById('mobile-drawer');
+            if (drawer) drawer.style.display = 'none';
+            document.body.style.overflow = '';
         };
 
-        if (settingsBtn)    settingsBtn.addEventListener('click',    () => openPanel(settingsPanel));
-        if (accountBtn)     accountBtn.addEventListener('click',     () => openPanel(accountPanel));
-        if (settingsClose)  settingsClose.addEventListener('click',  closeAll);
-        if (accountClose)   accountClose.addEventListener('click',   closeAll);
-        if (mobileSettings) mobileSettings.addEventListener('click', (e) => { e.preventDefault(); openPanel(settingsPanel); });
-        if (mobileAccount)  mobileAccount.addEventListener('click',  (e) => { e.preventDefault(); openPanel(accountPanel); });
-        if (backdrop)       backdrop.addEventListener('click', closeAll);
+        const wire = (btnId, overlayId) => {
+            const btn = document.getElementById(btnId);
+            const overlay = document.getElementById(overlayId);
+            if (btn && overlay) btn.addEventListener('click', () => openModal(overlay));
+        };
+
+        wire('settings-btn',    'settings-overlay');
+        wire('account-btn',     'account-overlay');
+        wire('mobile-settings-btn', 'settings-overlay');
+        wire('mobile-account-btn',  'account-overlay');
+
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', closeAll);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAll();
         });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeAll();
+            });
+        });
+
+        document.querySelectorAll('.modal-tabs').forEach(tabBar => {
+            tabBar.querySelectorAll('.modal-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const box = tabBar.closest('.modal-box');
+                    if (!box) return;
+                    tabBar.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const panel = tab.dataset.tab;
+                    box.querySelectorAll('.modal-tab-panel').forEach(p => {
+                        p.style.display = p.dataset.panel === panel ? '' : 'none';
+                    });
+                });
+            });
+        });
     },
 
     setupMobileMenu() {
-        const btn    = document.querySelector('.mobile-menu-btn');
+        const btn    = document.getElementById('mobile-menu-btn');
         const drawer = document.getElementById('mobile-drawer');
         if (!btn || !drawer) return;
 
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            drawer.classList.toggle('open');
-            btn.setAttribute('aria-expanded', drawer.classList.contains('open'));
+            const isOpen = drawer.style.display !== 'none';
+            drawer.style.display = isOpen ? 'none' : 'block';
+            btn.setAttribute('aria-expanded', String(!isOpen));
         });
 
         document.addEventListener('click', (e) => {
             if (!drawer.contains(e.target) && !btn.contains(e.target)) {
-                drawer.classList.remove('open');
+                drawer.style.display = 'none';
                 btn.setAttribute('aria-expanded', 'false');
             }
         });

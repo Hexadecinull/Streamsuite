@@ -27,8 +27,11 @@ require_once __DIR__ . '/includes/nav.php';
 <main id="detail-page">
     <div id="detail-backdrop" class="detail-backdrop"></div>
 
+    <div class="container detail-back-row">
+        <a href="javascript:history.back()" class="back-btn">&#8592; Back</a>
+    </div>
+
     <div class="container detail-container">
-        <a href="javascript:history.back()" class="back-btn detail-back">&#8592; Back</a>
 
         <div class="detail-layout">
             <div class="detail-poster">
@@ -83,6 +86,7 @@ require_once __DIR__ . '/includes/nav.php';
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/detail.js"></script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

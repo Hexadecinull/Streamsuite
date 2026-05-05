@@ -48,6 +48,7 @@ require_once __DIR__ . '/includes/nav.php';
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/home.js"></script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

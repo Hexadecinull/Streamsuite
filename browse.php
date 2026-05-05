@@ -28,8 +28,16 @@ require_once __DIR__ . '/includes/nav.php';
 <main id="browse-page" class="container">
     <div class="browse-header">
         <a href="/" class="back-btn">&#8592; Home</a>
-        <h1 class="text-2xl">Browse</h1>
+        <h1 class="text-2xl" id="browse-heading">Browse</h1>
         <span id="result-count" class="result-count"></span>
+    </div>
+
+    <div class="browse-search-bar">
+        <input type="text" id="browse-search-input" placeholder="Search within results&#8230;" autocomplete="off">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
     </div>
 
     <form id="filter-form" class="filter-bar">
@@ -80,6 +88,7 @@ require_once __DIR__ . '/includes/nav.php';
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/browse.js"></script>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

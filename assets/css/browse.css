@@ -180,3 +180,36 @@
 .trending-tab.active { background: var(--c-accent-dim); border-color: var(--c-accent); color: var(--c-accent); }
 
 .detail-back { display: inline-flex; margin-bottom: 1.25rem; }
+
+.browse-search-bar {
+    position: relative;
+    margin-bottom: 1.25rem;
+    max-width: 420px;
+}
+
+.browse-search-bar input {
+    width: 100%;
+    background: var(--c-bg-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-m);
+    color: var(--c-text);
+    padding: 0.55rem 2.5rem 0.55rem 0.9rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    box-sizing: border-box;
+}
+
+.browse-search-bar input:focus {
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 3px var(--c-accent-dim);
+}
+
+.browse-search-bar svg {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-text-3);
+    pointer-events: none;
+}

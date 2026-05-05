@@ -46,7 +46,12 @@ try {
     $trendingRaw   = $tmdb->trending('all', 'week');
     $trendingItems = $trendingRaw['results'] ?? [];
 
-    $popularMovies = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'vote_count.gte' => 50])['results'] ?? [];
+    $popularAnime  = $tmdb->discover('tv', [
+        'sort_by'                => 'popularity.desc',
+        'with_genres'            => '16',
+        'with_original_language' => 'ja',
+        'vote_count.gte'         => 20,
+    ])['results'] ?? [];
     $popularTV     = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results'] ?? [];
     $topRated      = $tmdb->discover('movie', ['sort_by' => 'vote_average.desc', 'vote_count.gte' => 500])['results'] ?? [];
     $actionMovies  = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'with_genres' => '28'])['results'] ?? [];
@@ -94,6 +99,14 @@ try {
             'items' => array_map(
                 fn ($i) => mapItem($i, $tmdb),
                 array_slice($trendingValid, 0, 12)
+            ),
+        ],
+        [
+            'id'    => 'anime',
+            'title' => 'Anime',
+            'items' => array_map(
+                fn ($i) => mapItem($i, $tmdb, 'tv'),
+                array_slice($popularAnime, 0, 12)
             ),
         ],
         [

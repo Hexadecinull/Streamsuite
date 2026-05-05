@@ -187,6 +187,7 @@ const HomePage = {
         if (!container || !rows?.length) return;
         const meta = {
             trending:       { href: '/trending',          icon: '&#128293;', label: 'See all' },
+            anime:          { href: '/anime',             icon: '&#127875;', label: 'All Anime' },
             popular_movies: { href: '/browse?type=movie', icon: '&#127916;', label: 'Browse Movies' },
             popular_tv:     { href: '/browse?type=tv',    icon: '&#128250;', label: 'Browse Series' },
             top_rated:      { href: '/browse?sort=vote_average', icon: '&#11088;', label: 'See all' },
