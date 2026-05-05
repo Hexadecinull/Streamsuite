@@ -48,14 +48,6 @@ const App = {
     },
 
     setupPanels() {
-        const openModal = (overlay) => {
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeAll();
-            }, { once: false });
-        };
-
         const closeAll = () => {
             ['settings-overlay', 'account-overlay'].forEach(id => {
                 const el = document.getElementById(id);
@@ -66,29 +58,41 @@ const App = {
             document.body.style.overflow = '';
         };
 
-        const wire = (btnId, overlayId) => {
-            const btn = document.getElementById(btnId);
-            const overlay = document.getElementById(overlayId);
-            if (btn && overlay) btn.addEventListener('click', () => openModal(overlay));
+        const openModal = (overlay, e) => {
+            if (e) { e.stopPropagation(); e.stopImmediatePropagation(); }
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         };
 
-        wire('settings-btn',    'settings-overlay');
-        wire('account-btn',     'account-overlay');
+        const wire = (btnId, overlayId) => {
+            const btn     = document.getElementById(btnId);
+            const overlay = document.getElementById(overlayId);
+            if (btn && overlay) {
+                btn.addEventListener('click', (e) => openModal(overlay, e));
+            }
+        };
+
+        wire('settings-btn',        'settings-overlay');
+        wire('account-btn',         'account-overlay');
         wire('mobile-settings-btn', 'settings-overlay');
         wire('mobile-account-btn',  'account-overlay');
 
         document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', closeAll);
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAll();
+            btn.addEventListener('click', (e) => { e.stopPropagation(); closeAll(); });
         });
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) closeAll();
             });
+        });
+
+        document.querySelectorAll('.modal-box').forEach(box => {
+            box.addEventListener('click', (e) => e.stopPropagation());
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAll();
         });
 
         document.querySelectorAll('.modal-tabs').forEach(tabBar => {

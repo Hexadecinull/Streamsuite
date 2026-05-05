@@ -32,30 +32,27 @@ require_once __DIR__ . '/includes/nav.php';
     </div>
 
     <div class="container detail-container">
-
-        <div class="detail-layout">
-            <div class="detail-poster">
-                <img id="detail-poster"
-                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"
-                     alt="">
+        <div class="detail-poster">
+            <img id="detail-poster"
+                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 3'%3E%3C/svg%3E"
+                 alt="">
+        </div>
+        <div class="detail-info">
+            <h1 id="detail-title" class="text-3xl"></h1>
+            <div class="detail-meta" id="detail-meta">
+                <span id="detail-year"></span>
+                <span class="rating">&#9733; <span id="detail-rating"></span></span>
+                <span id="detail-runtime"></span>
+                <span id="detail-age-badge"></span>
+                <span id="detail-genres"></span>
             </div>
-            <div class="detail-info">
-                <h1 id="detail-title" class="text-3xl"></h1>
-                <div class="detail-meta" id="detail-meta">
-                    <span id="detail-year"></span>
-                    <span class="rating">&#9733; <span id="detail-rating"></span></span>
-                    <span id="detail-runtime"></span>
-                    <span id="detail-age-badge"></span>
-                    <span id="detail-genres"></span>
-                </div>
-                <p id="detail-tagline" class="tagline"></p>
-                <div class="detail-actions">
-                    <a id="watch-btn" href="#" class="btn btn-primary">&#9654; Watch Now</a>
-                    <button id="favorite-btn" class="btn btn-secondary">+ Favorites</button>
-                    <button id="share-btn" class="btn btn-ghost">&#8599; Share</button>
-                </div>
-                <p id="detail-overview" class="overview"></p>
+            <p id="detail-tagline" class="tagline"></p>
+            <div class="detail-actions">
+                <a id="watch-btn" href="#" class="btn btn-primary">&#9654; Watch Now</a>
+                <button id="favorite-btn" class="btn btn-secondary">+ Favorites</button>
+                <button id="share-btn" class="btn btn-ghost">&#8599; Share</button>
             </div>
+            <p id="detail-overview" class="overview"></p>
         </div>
     </div>
 

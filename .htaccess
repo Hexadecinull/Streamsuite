@@ -58,7 +58,7 @@ RewriteRule ^([a-z0-9\-]+)/?$ $1.php [L,QSA]
         "default-src 'self'; \
          script-src 'self' 'unsafe-inline'; \
          style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://api.fontshare.com; \
-         img-src 'self' data: https://image.tmdb.org https://img.youtube.com; \
+         img-src 'self' data: https://image.tmdb.org https://img.youtube.com https://www.themoviedb.org; \
          media-src 'none'; \
          frame-src https://vidsrc.cc https://vidlink.pro https://embed.su \
                    https://vidsrc.me https://moviesapi.club https://multiembed.mov \

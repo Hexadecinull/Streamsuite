@@ -46,16 +46,19 @@ try {
     $trendingRaw   = $tmdb->trending('all', 'week');
     $trendingItems = $trendingRaw['results'] ?? [];
 
-    $popularAnime  = $tmdb->discover('tv', [
-        'sort_by'                => 'popularity.desc',
-        'with_genres'            => '16',
-        'with_original_language' => 'ja',
-        'vote_count.gte'         => 20,
-    ])['results'] ?? [];
-    $popularTV     = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results'] ?? [];
-    $topRated      = $tmdb->discover('movie', ['sort_by' => 'vote_average.desc', 'vote_count.gte' => 500])['results'] ?? [];
-    $actionMovies  = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'with_genres' => '28'])['results'] ?? [];
-    $comedySeries  = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'with_genres' => '35'])['results'] ?? [];
+    $popularMovies = [];
+    $popularTV     = [];
+    $popularAnime  = [];
+    $topRated      = [];
+    $actionMovies  = [];
+    $comedySeries  = [];
+
+    try { $popularMovies = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'vote_count.gte' => 50])['results']  ?? []; } catch (Throwable) {}
+    try { $popularTV     = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'vote_count.gte' => 20])['results']  ?? []; } catch (Throwable) {}
+    try { $popularAnime  = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'with_genres' => '16', 'with_original_language' => 'ja', 'vote_count.gte' => 20])['results'] ?? []; } catch (Throwable) {}
+    try { $topRated      = $tmdb->discover('movie', ['sort_by' => 'vote_average.desc', 'vote_count.gte' => 500])['results'] ?? []; } catch (Throwable) {}
+    try { $actionMovies  = $tmdb->discover('movie', ['sort_by' => 'popularity.desc', 'with_genres' => '28'])['results']    ?? []; } catch (Throwable) {}
+    try { $comedySeries  = $tmdb->discover('tv',    ['sort_by' => 'popularity.desc', 'with_genres' => '35'])['results']    ?? []; } catch (Throwable) {}
 
     $validTypes    = ['movie', 'tv'];
     $trendingValid = array_values(array_filter(
