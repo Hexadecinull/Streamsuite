@@ -191,7 +191,7 @@ $searchVal = htmlspecialchars(trim($_GET['q'] ?? ''), ENT_QUOTES, 'UTF-8');
                     <p>StreamSuite is a free, open-source streaming website that lets you watch movies and TV series for free — anonymously or with an account. No subscriptions. No ads. No tracking.</p>
                     <p>Built with PHP, vanilla JS, and the TMDB API. Video streams are provided by third-party embed services; StreamSuite does not host any content.</p>
                     <p>
-                        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">&#8599; Source Code on GitHub</a>&nbsp;&nbsp;
+                        <a href="https://github.com/Hexadecinull/Streamsuite" target="_blank" rel="noopener noreferrer">&#8599; Source Code on GitHub</a>&nbsp;&nbsp;
                         <a href="/terms">Terms of Service</a>&nbsp;&nbsp;
                         <a href="/privacy">Privacy Policy</a>&nbsp;&nbsp;
                         <a href="/dmca">DMCA</a>

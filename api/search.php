@@ -71,5 +71,6 @@ jsonSuccess([
     'page'          => (int) ($data['page']          ?? $page),
     'total_pages'   => (int) ($data['total_pages']   ?? 1),
     'total_results' => (int) ($data['total_results'] ?? count($results)),
+    'suggestion'    => null,
     'results'       => $results,
 ]);

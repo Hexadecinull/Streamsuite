@@ -32,15 +32,10 @@ require_once __DIR__ . '/includes/nav.php';
         <span id="result-count" class="result-count"></span>
     </div>
 
-    <div class="browse-search-bar">
-        <input type="text" id="browse-search-input" placeholder="Search within results&#8230;" autocomplete="off">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-    </div>
-
     <form id="filter-form" class="filter-bar">
+        <div class="filter-search-wrap">
+            <input type="text" id="browse-search-input" placeholder="Search&#8230;" autocomplete="off">
+        </div>
         <select name="type" aria-label="Media type">
             <option value="movie">Movies</option>
             <option value="tv">Series</option>

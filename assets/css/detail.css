@@ -43,6 +43,9 @@
 
 .detail-poster {
     flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    align-self: flex-start;
 }
 
 .detail-poster img {
@@ -52,7 +55,10 @@
     border-radius: var(--radius-l);
     box-shadow: var(--shadow-l);
     border: 1px solid var(--c-border);
+    transition: transform 0.3s var(--ease-out);
 }
+
+.detail-poster img:hover { transform: scale(1.02); }
 
 .detail-info {
     padding-top: 1rem;

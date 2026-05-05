@@ -27,7 +27,8 @@ $catalogId = sanitizeInt($_GET['catalog_id'] ?? 0, 1);
 if (!$catalogId) jsonError('Missing catalog_id', 422);
 
 $tmdbId    = $catalogId;
-$mediaType = 'tv';
+$typeHint  = trim($_GET['type'] ?? '');
+$mediaType = $typeHint === 'movie' ? 'movie' : 'tv';
 
 try {
     $db   = getDB();
@@ -36,8 +37,12 @@ try {
     $catalog = $stmt->fetch();
 
     if (!$catalog) {
-        $stmt2 = $db->prepare('SELECT tmdb_id, media_type FROM catalog WHERE tmdb_id = ? LIMIT 1');
-        $stmt2->execute([$catalogId]);
+        $q = $typeHint !== ''
+            ? 'SELECT tmdb_id, media_type FROM catalog WHERE tmdb_id = ? AND media_type = ? LIMIT 1'
+            : 'SELECT tmdb_id, media_type FROM catalog WHERE tmdb_id = ? LIMIT 1';
+        $stmt2 = $db->prepare($q);
+        $args  = $typeHint !== '' ? [$catalogId, $typeHint] : [$catalogId];
+        $stmt2->execute($args);
         $catalog = $stmt2->fetch();
     }
 

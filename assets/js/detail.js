@@ -64,6 +64,15 @@ const DetailPage = {
         set('detail-tagline',  data.tagline || '');
         set('detail-overview', data.overview || '');
 
+        const ageBadgeEl = document.getElementById('detail-age-badge');
+        if (ageBadgeEl && typeof AgeBadge !== 'undefined') {
+            const badge = AgeBadge.get(data.rating);
+            if (badge) {
+                ageBadgeEl.className = `age-badge ${badge.cls}`;
+                ageBadgeEl.textContent = badge.label;
+            }
+        }
+
         const poster   = document.getElementById('detail-poster');
         const backdrop = document.getElementById('detail-backdrop');
         if (poster)   poster.src = data.poster_url;
@@ -71,7 +80,11 @@ const DetailPage = {
 
         const watchBtn = document.getElementById('watch-btn');
         if (watchBtn) {
-            watchBtn.href = `/watch?id=${this.itemId}&type=${data.media_type}`;
+            if (data.media_type === 'tv') {
+                watchBtn.href = `/watch?id=${this.itemId}&type=tv&s=1&e=1`;
+            } else {
+                watchBtn.href = `/watch?id=${this.itemId}&type=movie`;
+            }
         }
 
         const shareBtn = document.getElementById('share-btn');
@@ -108,7 +121,7 @@ const DetailPage = {
     },
 
     updateFavBtn(btn, isFav) {
-        btn.textContent = isFav ? '✓ Favorited' : '+ Favorites';
+        btn.innerHTML = isFav ? '&#10003; Favorited' : '+ Favorites';
         btn.classList.toggle('btn-favorited', isFav);
     },
 
@@ -134,7 +147,7 @@ const DetailPage = {
     },
 
     async loadSeasons(catalogId) {
-        const seasons = await Api.get(`/seasons.php?catalog_id=${catalogId}`);
+        const seasons = await Api.get(`/seasons.php?catalog_id=${catalogId}&type=tv`);
 
         const selector = document.getElementById('season-selector');
         if (!selector) return;

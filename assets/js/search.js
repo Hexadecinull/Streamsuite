@@ -40,6 +40,15 @@ const SearchPage = {
         this.setupInfiniteScroll();
     },
 
+    showSuggestion(suggested) {
+        const box  = document.getElementById('search-suggestion');
+        const link = document.getElementById('suggestion-link');
+        if (!box || !link || !suggested) return;
+        link.textContent = suggested;
+        link.href = '/search?q=' + encodeURIComponent(suggested);
+        box.style.display = 'block';
+    },
+
     async loadResults(page) {
         if (this.isLoading || page > this.totalPages) return;
         this.isLoading = true;
@@ -53,11 +62,21 @@ const SearchPage = {
             this.renderResults(data.results, page === 1);
             this.currentPage = page;
 
-            const count = document.getElementById('result-count');
-            if (count && page === 1) {
-                count.textContent = data.total_results
-                    ? `${data.total_results.toLocaleString()} results`
-                    : '';
+            if (page === 1 && data.total_results !== undefined) {
+                const count = document.getElementById('result-count');
+                if (count) {
+                    count.textContent = data.total_results
+                        ? `${data.total_results.toLocaleString()} results`
+                        : '';
+                }
+
+                if (!data.results?.length && data.suggestion) {
+                    this.showSuggestion(data.suggestion);
+                } else if (data.suggestion && data.results?.length) {
+                    this.showSuggestion(data.suggestion);
+                }
+
+                if (!data.results?.length) this.renderEmpty();
             }
         } catch {
             Toast.show('Search failed. Please try again.');

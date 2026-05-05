@@ -213,3 +213,23 @@
     color: var(--c-text-3);
     pointer-events: none;
 }
+
+.filter-search-wrap {
+    flex: 1;
+    min-width: 160px;
+    max-width: 260px;
+}
+
+.filter-search-wrap input {
+    width: 100%;
+    background: var(--c-bg-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-m);
+    color: var(--c-text);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color var(--transition);
+    box-sizing: border-box;
+}
+.filter-search-wrap input:focus { border-color: var(--c-accent); }

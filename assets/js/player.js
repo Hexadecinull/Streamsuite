@@ -132,8 +132,8 @@ const Player = {
         const params    = new URLSearchParams(window.location.search);
         const catalogId = parseInt(params.get('id') || '0');
         const type      = params.get('type') || 'movie';
-        const season    = parseInt(params.get('s')  || '0');
-        const episode   = parseInt(params.get('e')  || '0');
+        const season    = parseInt(params.get('s')  || '0') || (type === 'tv' ? 1 : 0);
+        const episode   = parseInt(params.get('e')  || '0') || (type === 'tv' ? 1 : 0);
 
         if (!catalogId) return;
 

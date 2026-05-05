@@ -26,6 +26,7 @@ const App = {
         this.setupAuth();
         this.updateNavState();
         this.syncSettingsUI();
+        MobileBanner.init();
     },
 
     loadPreferences() {
@@ -488,3 +489,32 @@ const App = {
 };
 
 document.addEventListener('DOMContentLoaded', () => App.init());
+
+const MobileBanner = {
+    init() {
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+            || window.innerWidth < 768;
+        if (!isMobile) return;
+        if (sessionStorage.getItem('ss_mobile_warned')) return;
+        sessionStorage.setItem('ss_mobile_warned', '1');
+
+        const banner = document.createElement('div');
+        banner.id = 'mobile-banner';
+        banner.innerHTML = `
+            <div class="mobile-banner-inner">
+                <div class="mobile-banner-icon">&#128242;</div>
+                <div class="mobile-banner-text">
+                    <strong>Mobile app coming soon!</strong><br>
+                    StreamSuite is optimised for desktop. A dedicated mobile app is in development.
+                    The website may not work perfectly on mobile.
+                </div>
+                <button class="mobile-banner-close" id="mobile-banner-close" aria-label="Dismiss">&#10005;</button>
+            </div>`;
+        document.body.appendChild(banner);
+        requestAnimationFrame(() => banner.classList.add('mobile-banner-visible'));
+        document.getElementById('mobile-banner-close').addEventListener('click', () => {
+            banner.classList.remove('mobile-banner-visible');
+            setTimeout(() => banner.remove(), 350);
+        });
+    },
+};
