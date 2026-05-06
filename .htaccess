@@ -60,8 +60,8 @@ RewriteRule ^([a-z0-9\-]+)/?$ $1.php [L,QSA]
          style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://api.fontshare.com; \
          img-src 'self' data: https://image.tmdb.org https://img.youtube.com https://www.themoviedb.org; \
          media-src 'none'; \
-         frame-src https://vidsrc.cc https://vidlink.pro https://embed.su \
-                   https://vidsrc.me https://moviesapi.club https://multiembed.mov \
+         frame-src https://vidsrc.cc https://vidsrc.me https://vidlink.pro \
+                   https://vidsrc.pm https://vidsrc.in https://www.2embed.cc \
                    https://www.youtube.com https://www.youtube-nocookie.com; \
          connect-src 'self'; \
          font-src 'self' https://fonts.bunny.net https://api.fontshare.com https://cdn.fontshare.com; \

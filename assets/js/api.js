@@ -35,8 +35,12 @@ const Api = {
     async request(endpoint, options = {}) {
         const url     = this.baseUrl + endpoint;
         const headers = {
-            'Content-Type':  'application/json',
-            'X-Guest-Token': this.getGuestToken(),
+            'Content-Type':   'application/json',
+            'X-Guest-Token':  this.getGuestToken(),
+            'X-Content-Lang': (function() {
+                try { return JSON.parse(localStorage.getItem('ss_prefs') || '{}').contentLang || 'en-US'; }
+                catch { return 'en-US'; }
+            })(),
             ...options.headers,
         };
 

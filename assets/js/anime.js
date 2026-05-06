@@ -21,6 +21,9 @@ const AnimePage = {
     totalPages: 1,
     loading:    false,
     filter:     'popular',
+    genre:      '',
+    year:       '',
+    sort:       'popularity',
 
     async init() {
         const tabs = document.getElementById('anime-tabs');
@@ -32,6 +35,17 @@ const AnimePage = {
                     this.filter = btn.dataset.filter;
                     this.reset();
                 });
+            });
+        }
+
+        const filterForm = document.getElementById('anime-filter-form');
+        if (filterForm) {
+            filterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.genre = document.getElementById('anime-genre')?.value || '';
+                this.year  = document.getElementById('anime-year')?.value  || '';
+                this.sort  = document.getElementById('anime-sort')?.value  || 'popularity';
+                this.reset();
             });
         }
 
@@ -72,7 +86,11 @@ const AnimePage = {
         const loader = document.getElementById('browse-loader');
         if (loader) loader.style.display = 'block';
         try {
-            const data = await Api.get(`/anime.php?filter=${this.filter}&page=${this.page}`);
+            const params = new URLSearchParams({ filter: this.filter, page: this.page });
+            if (this.genre) params.set('genre', this.genre);
+            if (this.year)  params.set('year',  this.year);
+            if (this.sort)  params.set('sort',  this.sort);
+            const data = await Api.get(`/anime.php?${params.toString()}`);
             this.totalPages = data.total_pages || 1;
             this.renderItems(data.results || []);
             this.page++;

@@ -75,6 +75,28 @@
     <div class="footer-bottom">
         <div class="footer-bottom-inner">
             <span>&copy; <?= date('Y') ?> SSMG4 &amp; StreamSuite Contributors. Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener noreferrer">GPL-3.0</a>.</span>
+            <div class="footer-lang">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;color:var(--c-text-3)"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <select id="lang-picker" class="footer-lang-select" aria-label="Content language">
+                    <option value="en-US">English</option>
+                    <option value="fr-FR">Français</option>
+                    <option value="es-ES">Español</option>
+                    <option value="de-DE">Deutsch</option>
+                    <option value="it-IT">Italiano</option>
+                    <option value="pt-BR">Português (Brasil)</option>
+                    <option value="ja-JP">日本語</option>
+                    <option value="ko-KR">한국어</option>
+                    <option value="zh-CN">中文 (简体)</option>
+                    <option value="zh-TW">中文 (繁體)</option>
+                    <option value="ar-SA">العربية</option>
+                    <option value="ru-RU">Русский</option>
+                    <option value="pl-PL">Polski</option>
+                    <option value="nl-NL">Nederlands</option>
+                    <option value="sv-SE">Svenska</option>
+                    <option value="tr-TR">Türkçe</option>
+                    <option value="hi-IN">हिन्दी</option>
+                </select>
+            </div>
             <span class="footer-tmdb">
                 <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg"
                      alt="TMDB" height="14" loading="lazy"> Data provided by TMDB

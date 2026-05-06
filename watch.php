@@ -52,7 +52,7 @@ require_once __DIR__ . '/includes/head.php';
         </div>
         <iframe id="player-frame"
                 allowfullscreen
-                allow="fullscreen; autoplay"
+                allow="fullscreen"
                 sandbox="allow-scripts allow-forms allow-presentation allow-pointer-lock"></iframe>
     </div>
 

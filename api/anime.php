@@ -24,6 +24,11 @@ require_once __DIR__ . '/../includes/response.php';
 
 $filter = $_GET['filter'] ?? 'popular';
 $page   = max(1, (int) ($_GET['page'] ?? 1));
+$genre  = trim($_GET['genre'] ?? '');
+$year   = (int) ($_GET['year']  ?? 0);
+$sort   = in_array($_GET['sort'] ?? '', ['popularity', 'vote_average', 'first_air_date'], true)
+    ? $_GET['sort']
+    : 'popularity';
 
 try {
     $tmdb = new TMDB(TMDB_API_KEY);
@@ -39,14 +44,21 @@ try {
         });
         $total = (int) ($raw['total_pages'] ?? 1);
     } else {
-        $sort = $filter === 'top_rated' ? 'vote_average.desc' : 'popularity.desc';
+        $sortBy = $filter === 'top_rated' ? 'vote_average.desc' : $sort . '.desc';
         $params = [
-            'sort_by'               => $sort,
-            'with_genres'           => '16',
-            'with_original_language'=> 'ja',
-            'vote_count.gte'        => $filter === 'top_rated' ? 200 : 20,
-            'page'                  => $page,
+            'sort_by'                => $sortBy,
+            'with_genres'            => $genre ?: '16',
+            'with_original_language' => 'ja',
+            'vote_count.gte'         => $filter === 'top_rated' ? 200 : 20,
+            'page'                   => $page,
         ];
+        if ($year) {
+            $params['first_air_date.gte'] = $year . '-01-01';
+            $params['first_air_date.lte'] = $year . '-12-31';
+        }
+        if ($genre && !str_contains($genre, '16')) {
+            $params['with_genres'] = '16,' . $genre;
+        }
         $raw     = $tmdb->discover('tv', $params);
         $results = $raw['results'] ?? [];
         $total   = (int) ($raw['total_pages'] ?? 1);

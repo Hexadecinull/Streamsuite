@@ -30,7 +30,16 @@ class TMDB {
 
     private function fetch(string $endpoint, array $params = [], bool $isTrending = false): array {
         $params['api_key']  = $this->apiKey;
-        $params['language'] = defined('TMDB_LANG') ? TMDB_LANG : 'en-US';
+        $lang = '';
+        $headerLang = $_SERVER['HTTP_X_CONTENT_LANG'] ?? '';
+        if (preg_match('/^[a-z]{2}-[A-Z]{2}$/', $headerLang)) {
+            $lang = $headerLang;
+        } elseif (defined('TMDB_LANG') && TMDB_LANG) {
+            $lang = TMDB_LANG;
+        } else {
+            $lang = 'en-US';
+        }
+        $params['language'] = $lang;
         $url      = $this->baseUrl . $endpoint . '?' . http_build_query($params);
         $cacheKey = 'tmdb_' . md5($url);
 

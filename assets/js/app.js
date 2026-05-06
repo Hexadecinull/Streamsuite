@@ -26,6 +26,7 @@ const App = {
         this.setupAuth();
         this.updateNavState();
         this.syncSettingsUI();
+        this.setupLangPicker();
         MobileBanner.init();
     },
 
@@ -61,8 +62,10 @@ const App = {
 
         const openModal = (overlay, e) => {
             if (e) { e.stopPropagation(); e.stopImmediatePropagation(); }
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }, 0);
         };
 
         const wire = (btnId, overlayId) => {
@@ -476,6 +479,17 @@ const App = {
         if (/\d/.test(pw)) score++;
         if (/[^A-Za-z0-9]/.test(pw)) score++;
         return Math.min(3, score - 1);
+    },
+
+    setupLangPicker() {
+        const picker = document.getElementById('lang-picker');
+        if (!picker) return;
+        const prefs = this.getPrefs();
+        if (prefs.contentLang) picker.value = prefs.contentLang;
+        picker.addEventListener('change', () => {
+            this.setPrefs({ contentLang: picker.value });
+            Toast.show('Language updated — reload pages to apply.');
+        });
     },
 
     updateNavState() {

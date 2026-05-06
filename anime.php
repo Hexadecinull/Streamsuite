@@ -48,6 +48,26 @@ require_once __DIR__ . '/includes/nav.php';
         </svg>
     </div>
 
+    <form id="anime-filter-form" class="filter-bar">
+        <select id="anime-genre" aria-label="Genre">
+            <option value="">All Anime Genres</option>
+            <option value="16">Animation</option>
+            <option value="35">Comedy</option>
+            <option value="18">Drama</option>
+            <option value="10765">Sci-Fi &amp; Fantasy</option>
+            <option value="10759">Action &amp; Adventure</option>
+            <option value="9648">Mystery</option>
+            <option value="10762">Kids</option>
+        </select>
+        <input type="number" id="anime-year" placeholder="Year" min="1960" max="2026" aria-label="Year">
+        <select id="anime-sort" aria-label="Sort by">
+            <option value="popularity">Popularity</option>
+            <option value="vote_average">Rating</option>
+            <option value="first_air_date">Release Date</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+    </form>
+
     <div id="browse-results" class="browse-grid"></div>
     <div id="browse-loader" class="browse-loader" style="display:none;"></div>
     <div id="scroll-sentinel" style="height:20px;"></div>

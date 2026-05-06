@@ -72,7 +72,7 @@ require_once __DIR__ . '/includes/nav.php';
             <option value="desc">Descending</option>
             <option value="asc">Ascending</option>
         </select>
-        <button type="submit" class="btn btn-primary">Apply</button>
+        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
     </form>
 
     <div id="browse-results" class="browse-grid"></div>
