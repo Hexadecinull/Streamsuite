@@ -211,3 +211,18 @@
     .row-header { padding: 0 1rem; }
 }
 @media (max-width: 420px) { .row-items { grid-template-columns: repeat(2, 1fr); } }
+
+@keyframes featured-slide {
+    from { opacity: 0; transform: translateX(28px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.featured-slide-in { animation: featured-slide 0.45s var(--ease-out) both; }
+
+.featured-backdrop {
+    transition: background-image 0.6s ease;
+}
+
+.featured-dot {
+    transition: width 0.35s var(--ease-out), background 0.35s ease, opacity 0.2s ease;
+}

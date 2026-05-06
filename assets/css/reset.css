@@ -18,6 +18,12 @@ body {
     min-height: 100vh;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 img, picture, video, canvas, svg {
@@ -46,4 +52,13 @@ button {
 
 ul, ol {
     list-style: none;
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+* {
+    min-width: 0;
 }

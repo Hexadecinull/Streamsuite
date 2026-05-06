@@ -84,20 +84,9 @@ const HomePage = {
         this.buildDots(container);
 
         if (items.length > 1) {
-            this.rotateTimer = setInterval(() => {
-                this.featuredIndex = (this.featuredIndex + 1) % this.featuredItems.length;
-                this.showFeatured(this.featuredIndex, container);
-                this.updateDots();
-            }, 9000);
-
+            this.startAutoRotate(container);
             container.addEventListener('mouseenter', () => clearInterval(this.rotateTimer));
-            container.addEventListener('mouseleave', () => {
-                this.rotateTimer = setInterval(() => {
-                    this.featuredIndex = (this.featuredIndex + 1) % this.featuredItems.length;
-                    this.showFeatured(this.featuredIndex, container);
-                    this.updateDots();
-                }, 9000);
-            });
+            container.addEventListener('mouseleave', () => this.startAutoRotate(container));
         }
     },
 
@@ -114,6 +103,7 @@ const HomePage = {
             backdropEl.className = 'featured-backdrop';
             container.insertBefore(backdropEl, container.firstChild);
         }
+
         backdropEl.style.backgroundImage = `url('${this.esc(item.backdrop_url)}')`;
 
         let contentEl = container.querySelector('.featured-content');
@@ -122,6 +112,12 @@ const HomePage = {
             contentEl.className = 'featured-content container';
             container.appendChild(contentEl);
         }
+
+        contentEl.style.animation = 'none';
+        contentEl.offsetHeight;
+        contentEl.style.animation = '';
+        contentEl.classList.add('featured-slide-in');
+        contentEl.addEventListener('animationend', () => contentEl.classList.remove('featured-slide-in'), { once: true });
 
         contentEl.innerHTML = `
             <div class="featured-type-badge">${type}</div>
@@ -133,7 +129,7 @@ const HomePage = {
             </div>
             <p class="featured-overview">${this.esc(item.overview || '')}</p>
             <div class="featured-actions">
-                <a href="/watch?id=${item.id}&type=${item.media_type}" class="btn btn-primary">&#9654; Watch Now</a>
+                <a href="/watch?id=${item.id}&type=${item.media_type}${item.media_type==='tv'?'&s=1&e=1':''}" class="btn btn-primary">&#9654; Watch Now</a>
                 <button class="btn btn-secondary featured-fav-btn" data-id="${item.id}" data-type="${item.media_type}" data-title="${this.esc(item.title)}" data-poster="${this.esc(item.poster_url)}">+ Favorites</button>
                 <a href="/detail?id=${item.id}&type=${item.media_type}" class="btn btn-ghost">&#9432; Details</a>
             </div>`;
@@ -170,10 +166,38 @@ const HomePage = {
             dot.addEventListener('click', () => {
                 clearInterval(this.rotateTimer);
                 this.featuredIndex = parseInt(dot.dataset.index);
-                this.showFeatured(this.featuredIndex, document.getElementById('featured-container'));
+                this.showFeatured(this.featuredIndex, container);
                 this.updateDots();
+                this.startAutoRotate(container);
             });
         });
+
+        let touchStartX = 0;
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        container.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) < 40) return;
+            clearInterval(this.rotateTimer);
+            if (dx < 0) {
+                this.featuredIndex = (this.featuredIndex + 1) % this.featuredItems.length;
+            } else {
+                this.featuredIndex = (this.featuredIndex - 1 + this.featuredItems.length) % this.featuredItems.length;
+            }
+            this.showFeatured(this.featuredIndex, container);
+            this.updateDots();
+            this.startAutoRotate(container);
+        }, { passive: true });
+    },
+
+    startAutoRotate(container) {
+        clearInterval(this.rotateTimer);
+        this.rotateTimer = setInterval(() => {
+            this.featuredIndex = (this.featuredIndex + 1) % this.featuredItems.length;
+            this.showFeatured(this.featuredIndex, container);
+            this.updateDots();
+        }, 9000);
     },
 
     updateDots() {

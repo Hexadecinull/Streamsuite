@@ -33,8 +33,13 @@ require_once __DIR__ . '/includes/head.php';
             <div id="episode-label-nav" style="font-size:0.72rem;color:var(--c-accent);font-family:var(--font-mono);"></div>
         </div>
         <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
-            <a id="back-to-detail" href="/" class="btn btn-ghost btn-sm">&#8592; Back</a>
-            <a href="/" class="btn btn-ghost btn-sm" style="color:var(--c-text-3);">&#8962;</a>
+            <a id="back-to-detail" href="/" class="watch-back-btn" title="Back to details">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                <span>Back</span>
+            </a>
+            <a href="/" class="watch-home-btn" title="Home">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </a>
         </div>
     </div>
 </header>
@@ -52,8 +57,7 @@ require_once __DIR__ . '/includes/head.php';
         </div>
         <iframe id="player-frame"
                 allowfullscreen
-                allow="fullscreen"
-                sandbox="allow-scripts allow-forms allow-presentation allow-pointer-lock"></iframe>
+                allow="fullscreen"></iframe>
     </div>
 
     <div class="player-ui">

@@ -14,6 +14,7 @@
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .detail-backdrop::after {
@@ -26,6 +27,13 @@
         rgba(12,12,13,0.6) 60%,
         var(--c-bg) 100%
     );
+}
+
+.detail-back-row {
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+    position: relative;
+    z-index: 10;
 }
 
 .detail-container {
@@ -43,8 +51,6 @@
 
 .detail-poster {
     flex-shrink: 0;
-    position: sticky;
-    top: calc(var(--header-h) + 1.5rem);
     align-self: flex-start;
 }
 
@@ -55,10 +61,7 @@
     border-radius: var(--radius-l);
     box-shadow: var(--shadow-l);
     border: 1px solid var(--c-border);
-    transition: transform 0.3s var(--ease-out);
 }
-
-.detail-poster img:hover { transform: scale(1.02); }
 
 .detail-info {
     padding-top: 1rem;

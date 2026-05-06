@@ -37,6 +37,7 @@ require_once __DIR__ . '/includes/nav.php';
             <input type="text" id="browse-search-input" placeholder="Search&#8230;" autocomplete="off">
         </div>
         <select name="type" aria-label="Media type">
+            <option value="">All</option>
             <option value="movie">Movies</option>
             <option value="tv">Series</option>
         </select>

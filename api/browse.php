@@ -27,7 +27,7 @@ $allowedTypes = ['movie', 'tv'];
 $allowedSorts = ['popularity', 'vote_average', 'release_date', 'original_title'];
 $allowedOrder = ['asc', 'desc'];
 
-$type  = in_array($_GET['type'] ?? 'movie', $allowedTypes) ? $_GET['type'] : 'movie';
+$type  = in_array($_GET['type'] ?? '', $allowedTypes) ? $_GET['type'] : '';
 $page  = sanitizeInt($_GET['page'] ?? 1, 1, 500);
 $genre = (int) ($_GET['genre'] ?? 0);
 $year  = (int) ($_GET['year']  ?? 0);
@@ -56,21 +56,38 @@ if ($year > 1900 && $year <= (int) date('Y') + 1) {
 $tmdb = new TMDB(TMDB_API_KEY);
 
 try {
-    $data = $tmdb->discover($type, $params);
+    if ($type === '') {
+        $moviesRaw = $tmdb->discover('movie', $params);
+        $tvRaw     = $tmdb->discover('tv',    $params);
+        $merged    = array_merge(
+            array_slice($moviesRaw['results'] ?? [], 0, 10),
+            array_slice($tvRaw['results']     ?? [], 0, 10)
+        );
+        usort($merged, fn ($a, $b) => ($b['popularity'] ?? 0) <=> ($a['popularity'] ?? 0));
+        $data = [
+            'results'      => $merged,
+            'total_pages'  => max($moviesRaw['total_pages'] ?? 1, $tvRaw['total_pages'] ?? 1),
+            'total_results'=> ($moviesRaw['total_results'] ?? 0) + ($tvRaw['total_results'] ?? 0),
+            'page'         => $page,
+        ];
+    } else {
+        $data = $tmdb->discover($type, $params);
+    }
 } catch (Throwable) {
     jsonSuccess(['page' => $page, 'total_pages' => 1, 'total_results' => 0, 'results' => []]);
 }
 
 $results = array_map(function (array $item) use ($tmdb, $type): array {
-    $releaseDate = $type === 'movie'
+    $mediaType   = $type !== '' ? $type : (isset($item['title']) ? 'movie' : 'tv');
+    $releaseDate = $mediaType === 'movie'
         ? ($item['release_date']    ?? '')
         : ($item['first_air_date']  ?? '');
 
     return [
         'id'         => (int) $item['id'],
         'tmdb_id'    => (int) $item['id'],
-        'media_type' => $type,
-        'title'      => $type === 'movie' ? ($item['title'] ?? '') : ($item['name'] ?? ''),
+        'media_type' => $mediaType,
+        'title'      => $mediaType === 'movie' ? ($item['title'] ?? '') : ($item['name'] ?? ''),
         'poster_url' => $tmdb->posterUrl($item['poster_path'] ?? ''),
         'rating'     => round((float) ($item['vote_average'] ?? 0), 1),
         'year'       => substr($releaseDate, 0, 4),

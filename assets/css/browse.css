@@ -239,3 +239,17 @@
 @media (max-width: 600px) {
     .filter-search-wrap { margin-left: 0; width: 100%; }
 }
+
+.filter-bar .btn-sm {
+    height: 34px;
+    padding: 0 0.85rem;
+    font-size: 0.85rem;
+    align-self: stretch;
+    white-space: nowrap;
+}
+
+.filter-bar select,
+.filter-bar input[type="number"] {
+    height: 34px;
+    box-sizing: border-box;
+}

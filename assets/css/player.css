@@ -208,3 +208,34 @@
 @media (max-width: 480px) {
     .server-btn { padding: 0.25rem 0.5rem; font-size: 0.72rem; }
 }
+
+.watch-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem 0.35rem 0.55rem;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-3);
+    color: var(--c-text-2);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition);
+}
+.watch-back-btn:hover { color: var(--c-text); border-color: var(--c-border-2); background: var(--c-bg-4); }
+
+.watch-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--c-border);
+    background: var(--c-bg-3);
+    color: var(--c-text-3);
+    text-decoration: none;
+    transition: all var(--transition);
+}
+.watch-home-btn:hover { color: var(--c-text); border-color: var(--c-border-2); background: var(--c-bg-4); }

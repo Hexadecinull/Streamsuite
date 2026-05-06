@@ -21,7 +21,7 @@ const BrowsePage = {
     totalPages:  1,
     isLoading:   false,
     filters: {
-        type:  'movie',
+        type:  '',
         genre: '',
         year:  '',
         sort:  'popularity',
@@ -43,7 +43,7 @@ const BrowsePage = {
         if (!h) return;
         if (this.filters.type === 'movie') h.textContent = 'Movies';
         else if (this.filters.type === 'tv') h.textContent = 'Series';
-        else h.textContent = 'Browse';
+        else h.textContent = 'Browse All';
     },
 
     setupBrowseSearch() {

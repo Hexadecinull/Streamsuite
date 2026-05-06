@@ -40,14 +40,6 @@ require_once __DIR__ . '/includes/nav.php';
         </div>
     </div>
 
-    <div class="browse-search-bar" style="margin-bottom:1.5rem;">
-        <input type="text" id="anime-search-input" placeholder="Search anime&#8230;" autocomplete="off">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-    </div>
-
     <form id="anime-filter-form" class="filter-bar">
         <select id="anime-genre" aria-label="Genre">
             <option value="">All Anime Genres</option>
@@ -66,6 +58,9 @@ require_once __DIR__ . '/includes/nav.php';
             <option value="first_air_date">Release Date</option>
         </select>
         <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+        <div class="filter-search-wrap">
+            <input type="text" id="anime-search-input" placeholder="Search anime&#8230;" autocomplete="off">
+        </div>
     </form>
 
     <div id="browse-results" class="browse-grid"></div>

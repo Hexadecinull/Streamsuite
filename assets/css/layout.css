@@ -144,7 +144,7 @@ main {
 .site-footer {
     background: var(--c-bg-2);
     border-top: 1px solid var(--c-border);
-    margin-top: 5rem;
+    flex-shrink: 0;
 }
 
 .footer-inner {
@@ -189,6 +189,14 @@ main {
 .footer-socials {
     display: flex;
     gap: 0.5rem;
+}
+
+.footer-socials-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
 }
 
 .footer-social {
@@ -386,3 +394,7 @@ main {
     transition: border-color var(--transition);
 }
 .footer-lang-select:focus { border-color: var(--c-accent); }
+
+/* ── Spacing before footer on content pages ──────────────────────────────── */
+.container { padding-bottom: 3rem; }
+#home-page .content-rows { padding-bottom: 4rem; }

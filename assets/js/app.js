@@ -62,10 +62,12 @@ const App = {
 
         const openModal = (overlay, e) => {
             if (e) { e.stopPropagation(); e.stopImmediatePropagation(); }
-            setTimeout(() => {
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }, 0);
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            overlay.dataset.justOpened = '1';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                delete overlay.dataset.justOpened;
+            }));
         };
 
         const wire = (btnId, overlayId) => {
@@ -87,6 +89,7 @@ const App = {
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
+                if (overlay.dataset.justOpened) return;
                 if (e.target === overlay) closeAll();
             });
         });
