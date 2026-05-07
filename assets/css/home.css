@@ -19,7 +19,7 @@
     background-position: center 20%;
     background-repeat: no-repeat;
     transform: scale(1.03);
-    transition: background-image 0.5s ease;
+    transition: background-image 0.6s ease;
 }
 
 .featured-backdrop::after {
@@ -122,7 +122,7 @@
     border-radius: 3px;
     background: rgba(255,255,255,0.3);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: width 0.35s var(--ease-out), background 0.35s ease, opacity 0.2s ease;
     border: none;
     padding: 0;
 }
@@ -218,11 +218,3 @@
 }
 
 .featured-slide-in { animation: featured-slide 0.45s var(--ease-out) both; }
-
-.featured-backdrop {
-    transition: background-image 0.6s ease;
-}
-
-.featured-dot {
-    transition: width 0.35s var(--ease-out), background 0.35s ease, opacity 0.2s ease;
-}

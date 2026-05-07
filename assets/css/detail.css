@@ -289,13 +289,6 @@
     gap: 1rem;
 }
 
-.detail-back-row {
-    padding-top: 1.25rem;
-    padding-bottom: 0.5rem;
-    position: relative;
-    z-index: 2;
-}
-
 @media (max-width: 900px) {
     .detail-container {
         grid-template-columns: 160px 1fr;

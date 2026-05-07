@@ -10,6 +10,8 @@
     margin-right: auto;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    padding-bottom: 3rem;
+}
 }
 
 .flex { display: flex; }
@@ -396,5 +398,4 @@ main {
 .footer-lang-select:focus { border-color: var(--c-accent); }
 
 /* ── Spacing before footer on content pages ──────────────────────────────── */
-.container { padding-bottom: 3rem; }
 #home-page .content-rows { padding-bottom: 4rem; }
