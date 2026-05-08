@@ -317,3 +317,8 @@
     .episode-item .btn { display: none; }
     .detail-backdrop { height: 280px; }
 }
+
+.detail-back-inline {
+    display: inline-flex;
+    margin-bottom: 1rem;
+}

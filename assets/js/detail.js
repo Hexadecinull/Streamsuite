@@ -105,8 +105,6 @@ const DetailPage = {
             const isFav = Favorites.isFavorite(parseInt(this.itemId));
             this.updateFavBtn(favBtn, isFav);
             favBtn.addEventListener('click', () => {
-                favBtn.classList.add('fav-pop');
-                favBtn.addEventListener('animationend', () => favBtn.classList.remove('fav-pop'), { once: true });
                 const added = Favorites.toggle(parseInt(this.itemId), {
                     title:  data.title,
                     poster: data.poster_url,
@@ -121,7 +119,7 @@ const DetailPage = {
     },
 
     updateFavBtn(btn, isFav) {
-        btn.innerHTML = isFav ? '&#10003; Favorited' : '+ Favorites';
+        btn.innerHTML = isFav ? '&#10003; Favorited' : '+ Favorite';
         btn.classList.toggle('btn-favorited', isFav);
     },
 

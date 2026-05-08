@@ -27,6 +27,7 @@ const App = {
         this.updateNavState();
         this.syncSettingsUI();
         this.setupLangPicker();
+        I18n.init();
         MobileBanner.init();
     },
 
@@ -491,7 +492,9 @@ const App = {
         if (prefs.contentLang) picker.value = prefs.contentLang;
         picker.addEventListener('change', () => {
             this.setPrefs({ contentLang: picker.value });
-            Toast.show('Language updated — reload pages to apply.');
+            I18n.currentLang = picker.value;
+            I18n.apply();
+            Toast.show('Language updated — reload to apply to all content.');
         });
     },
 
@@ -532,6 +535,223 @@ const MobileBanner = {
         document.getElementById('mobile-banner-close').addEventListener('click', () => {
             banner.classList.remove('mobile-banner-visible');
             setTimeout(() => banner.remove(), 350);
+        });
+    },
+};
+
+const I18n = {
+    strings: {
+        'en-US': {},
+        'fr-FR': {
+            'Watch Now': 'Regarder',
+            'Trending Now': 'Tendances',
+            'Popular Movies': 'Films populaires',
+            'Popular Series': 'Séries populaires',
+            'Top Rated': 'Les mieux notés',
+            'Action & Adventure': 'Action et aventure',
+            'Comedy Series': 'Comédies',
+            'Anime': 'Anime',
+            'Continue Watching': 'Continuer à regarder',
+            'History': 'Historique',
+            'Favorites': 'Favoris',
+            '+ Favorite': '+ Favoris',
+            'Browse': 'Parcourir',
+            'Search': 'Rechercher',
+            'Settings': 'Paramètres',
+            'Account': 'Compte',
+            'Sign In': 'Se connecter',
+            'Create Account': 'Créer un compte',
+            'Home': 'Accueil',
+            'Movies': 'Films',
+            'Series': 'Séries',
+            'Trending': 'Tendances',
+            'Details': 'Détails',
+            'Cast': 'Distribution',
+            'Trailer': 'Bande-annonce',
+            'More Like This': 'Similaires',
+            'Back': 'Retour',
+            'Retry': 'Réessayer',
+            'Server': 'Serveur',
+            'Apply': 'Appliquer',
+            'All Genres': 'Tous les genres',
+            'Popularity': 'Popularité',
+            'Release Date': 'Date de sortie',
+            'Rating': 'Note',
+            'Descending': 'Décroissant',
+            'Ascending': 'Croissant',
+            'Watch History': 'Historique',
+            'Clear All': 'Tout effacer',
+            'Favorited': 'Ajouté',
+            'Added to favorites': 'Ajouté aux favoris',
+            'Removed from favorites': 'Retiré des favoris',
+        },
+        'es-ES': {
+            'Watch Now': 'Ver ahora',
+            'Trending Now': 'Tendencias',
+            'Popular Movies': 'Películas populares',
+            'Popular Series': 'Series populares',
+            'Top Rated': 'Mejor valoradas',
+            'Action & Adventure': 'Acción y aventura',
+            'Comedy Series': 'Series de comedia',
+            'Continue Watching': 'Continuar viendo',
+            '+ Favorite': '+ Favorito',
+            'Browse': 'Explorar',
+            'Search': 'Buscar',
+            'Settings': 'Ajustes',
+            'Account': 'Cuenta',
+            'Sign In': 'Iniciar sesión',
+            'Create Account': 'Crear cuenta',
+            'Home': 'Inicio',
+            'Movies': 'Películas',
+            'Series': 'Series',
+            'Trending': 'Tendencias',
+            'Details': 'Detalles',
+            'Cast': 'Reparto',
+            'Trailer': 'Tráiler',
+            'More Like This': 'Similares',
+            'Back': 'Volver',
+            'Retry': 'Reintentar',
+            'Apply': 'Aplicar',
+            'Watch History': 'Historial',
+            'Clear All': 'Borrar todo',
+            'Added to favorites': 'Añadido a favoritos',
+            'Removed from favorites': 'Eliminado de favoritos',
+        },
+        'de-DE': {
+            'Watch Now': 'Jetzt ansehen',
+            'Trending Now': 'Trending',
+            'Popular Movies': 'Beliebte Filme',
+            'Popular Series': 'Beliebte Serien',
+            'Top Rated': 'Top bewertet',
+            '+ Favorite': '+ Favorit',
+            'Browse': 'Durchsuchen',
+            'Search': 'Suchen',
+            'Settings': 'Einstellungen',
+            'Account': 'Konto',
+            'Sign In': 'Anmelden',
+            'Create Account': 'Konto erstellen',
+            'Home': 'Startseite',
+            'Movies': 'Filme',
+            'Series': 'Serien',
+            'Trending': 'Trends',
+            'Details': 'Details',
+            'Cast': 'Besetzung',
+            'Trailer': 'Trailer',
+            'Back': 'Zurück',
+            'Retry': 'Erneut versuchen',
+            'Apply': 'Anwenden',
+            'Watch History': 'Verlauf',
+            'Clear All': 'Alles löschen',
+            'Added to favorites': 'Zu Favoriten hinzugefügt',
+            'Removed from favorites': 'Aus Favoriten entfernt',
+        },
+        'pt-BR': {
+            'Watch Now': 'Assistir agora',
+            '+ Favorite': '+ Favorito',
+            'Browse': 'Explorar',
+            'Search': 'Buscar',
+            'Settings': 'Configurações',
+            'Account': 'Conta',
+            'Sign In': 'Entrar',
+            'Create Account': 'Criar conta',
+            'Home': 'Início',
+            'Movies': 'Filmes',
+            'Series': 'Séries',
+            'Back': 'Voltar',
+            'Apply': 'Aplicar',
+            'Watch History': 'Histórico',
+            'Clear All': 'Limpar tudo',
+        },
+        'ja-JP': {
+            'Watch Now': '今すぐ視聴',
+            '+ Favorite': '+ お気に入り',
+            'Browse': '探す',
+            'Search': '検索',
+            'Settings': '設定',
+            'Account': 'アカウント',
+            'Sign In': 'サインイン',
+            'Home': 'ホーム',
+            'Movies': '映画',
+            'Series': 'シリーズ',
+            'Trending': 'トレンド',
+            'Back': '戻る',
+            'Apply': '適用',
+            'Watch History': '視聴履歴',
+        },
+        'ko-KR': {
+            'Watch Now': '지금 보기',
+            '+ Favorite': '+ 즐겨찾기',
+            'Browse': '탐색',
+            'Search': '검색',
+            'Settings': '설정',
+            'Account': '계정',
+            'Home': '홈',
+            'Movies': '영화',
+            'Series': '시리즈',
+            'Back': '뒤로',
+            'Apply': '적용',
+        },
+        'zh-CN': {
+            'Watch Now': '立即观看',
+            '+ Favorite': '+ 收藏',
+            'Browse': '浏览',
+            'Search': '搜索',
+            'Settings': '设置',
+            'Account': '账户',
+            'Home': '首页',
+            'Movies': '电影',
+            'Series': '剧集',
+            'Back': '返回',
+            'Apply': '应用',
+        },
+        'it-IT': {
+            'Watch Now': 'Guarda ora',
+            '+ Favorite': '+ Preferito',
+            'Browse': 'Sfoglia',
+            'Search': 'Cerca',
+            'Settings': 'Impostazioni',
+            'Account': 'Account',
+            'Home': 'Home',
+            'Movies': 'Film',
+            'Series': 'Serie',
+            'Back': 'Indietro',
+            'Apply': 'Applica',
+            'Watch History': 'Cronologia',
+        },
+        'ru-RU': {
+            'Watch Now': 'Смотреть',
+            '+ Favorite': '+ В избранное',
+            'Browse': 'Обзор',
+            'Search': 'Поиск',
+            'Settings': 'Настройки',
+            'Account': 'Аккаунт',
+            'Home': 'Главная',
+            'Movies': 'Фильмы',
+            'Series': 'Сериалы',
+            'Back': 'Назад',
+            'Apply': 'Применить',
+        },
+    },
+
+    currentLang: 'en-US',
+
+    init() {
+        try {
+            this.currentLang = JSON.parse(localStorage.getItem('ss_prefs') || '{}').contentLang || 'en-US';
+        } catch { this.currentLang = 'en-US'; }
+        if (this.currentLang !== 'en-US') this.apply();
+        window.__ = (key) => this.t(key);
+    },
+
+    t(key) {
+        const dict = this.strings[this.currentLang] || {};
+        return dict[key] || key;
+    },
+
+    apply() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = this.t(key);
         });
     },
 };

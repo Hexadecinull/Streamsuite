@@ -27,12 +27,12 @@ $searchVal = htmlspecialchars(trim($_GET['q'] ?? ''), ENT_QUOTES, 'UTF-8');
             <span>StreamSuite</span>
         </a>
         <nav class="nav-links" aria-label="Primary">
-            <a href="/"                  class="nav-link <?= $activePage==='home'     ?'active':'' ?>">Home</a>
-            <a href="/browse?type=movie" class="nav-link <?= $activePage==='movies'   ?'active':'' ?>">Movies</a>
-            <a href="/browse?type=tv"    class="nav-link <?= $activePage==='series'   ?'active':'' ?>">Series</a>
-            <a href="/anime"             class="nav-link <?= $activePage==='anime'    ?'active':'' ?>">Anime</a>
-            <a href="/browse"            class="nav-link <?= $activePage==='browse'   ?'active':'' ?>">Browse</a>
-            <a href="/trending"          class="nav-link <?= $activePage==='trending' ?'active':'' ?>">Trending</a>
+            <a href="/"                  class="nav-link <?= $activePage==='home'     ?'active':'' ?>"><span data-i18n="Home">Home</span></a>
+            <a href="/browse?type=movie" class="nav-link <?= $activePage==='movies'   ?'active':'' ?>"><span data-i18n="Movies">Movies</span></a>
+            <a href="/browse?type=tv"    class="nav-link <?= $activePage==='series'   ?'active':'' ?>"><span data-i18n="Series">Series</span></a>
+            <a href="/anime"             class="nav-link <?= $activePage==='anime'    ?'active':'' ?>"><span data-i18n="Anime">Anime</span></a>
+            <a href="/browse"            class="nav-link <?= $activePage==='browse'   ?'active':'' ?>"><span data-i18n="Browse">Browse</span></a>
+            <a href="/trending"          class="nav-link <?= $activePage==='trending' ?'active':'' ?>"><span data-i18n="Trending">Trending</span></a>
         </nav>
         <div class="header-center">
             <div class="search-wrap" id="search-wrap">

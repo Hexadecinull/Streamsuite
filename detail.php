@@ -27,10 +27,6 @@ require_once __DIR__ . '/includes/nav.php';
 <main id="detail-page">
     <div id="detail-backdrop" class="detail-backdrop"></div>
 
-    <div class="container detail-back-row">
-        <a href="javascript:history.back()" class="back-btn">&#8592; Back</a>
-    </div>
-
     <div class="container detail-container">
         <div class="detail-poster">
             <img id="detail-poster"
@@ -38,6 +34,7 @@ require_once __DIR__ . '/includes/nav.php';
                  alt="">
         </div>
         <div class="detail-info">
+            <a href="javascript:history.back()" class="back-btn detail-back-inline">&#8592; Back</a>
             <h1 id="detail-title" class="text-3xl"></h1>
             <div class="detail-meta" id="detail-meta">
                 <span id="detail-year"></span>

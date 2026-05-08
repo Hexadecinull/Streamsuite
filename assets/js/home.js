@@ -130,20 +130,24 @@ const HomePage = {
             <p class="featured-overview">${this.esc(item.overview || '')}</p>
             <div class="featured-actions">
                 <a href="/watch?id=${item.id}&type=${item.media_type}${item.media_type==='tv'?'&s=1&e=1':''}" class="btn btn-primary">&#9654; Watch Now</a>
-                <button class="btn btn-secondary featured-fav-btn" data-id="${item.id}" data-type="${item.media_type}" data-title="${this.esc(item.title)}" data-poster="${this.esc(item.poster_url)}">+ Favorites</button>
+                <button class="btn btn-secondary featured-fav-btn" data-id="${item.id}" data-type="${item.media_type}" data-title="${this.esc(item.title)}" data-poster="${this.esc(item.poster_url)}">+ Favorite</button>
                 <a href="/detail?id=${item.id}&type=${item.media_type}" class="btn btn-ghost">&#9432; Details</a>
             </div>`;
 
         const favBtn = contentEl.querySelector('.featured-fav-btn');
         if (favBtn) {
-            if (Favorites.isFavorite(parseInt(item.id))) favBtn.textContent = '&#10003; Favorited';
+            if (Favorites.isFavorite(parseInt(item.id))) {
+                favBtn.innerHTML = '&#10003; Favorited';
+                favBtn.classList.add('btn-favorited');
+            }
             favBtn.addEventListener('click', () => {
                 const added = Favorites.toggle(parseInt(favBtn.dataset.id), {
                     title:  favBtn.dataset.title,
                     poster: favBtn.dataset.poster,
                     type:   favBtn.dataset.type,
                 });
-                favBtn.textContent = added ? '&#10003; Favorited' : '+ Favorites';
+                favBtn.innerHTML = added ? '&#10003; Favorited' : '+ Favorite';
+                favBtn.classList.toggle('btn-favorited', added);
                 Toast.show(added ? 'Added to favorites' : 'Removed from favorites');
                 const method = added ? Api.post : Api.delete;
                 method.call(Api, '/favorites.php', { catalog_id: parseInt(favBtn.dataset.id) }).catch(() => {});
@@ -220,12 +224,13 @@ const HomePage = {
         };
         container.innerHTML = rows.map(row => {
             const m = meta[row.id] || { href: '/browse', icon: '&#9654;', label: 'See all' };
+            const title = typeof __ === 'function' ? __(row.title) : row.title;
             return `
                 <section class="content-row">
                     <div class="row-header">
                         <div class="row-header-left">
                             <div class="row-icon">${m.icon}</div>
-                            <h2 class="text-xl">${this.esc(row.title)}</h2>
+                            <h2 class="text-xl">${this.esc(title)}</h2>
                         </div>
                         <a href="${m.href}" class="see-all">${m.label} &rarr;</a>
                     </div>

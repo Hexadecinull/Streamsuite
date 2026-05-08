@@ -27,8 +27,8 @@ $type      = $_GET['type'] ?? '';
 $season    = sanitizeInt($_GET['season']  ?? 0, 0, 50);
 $episode   = sanitizeInt($_GET['episode'] ?? 0, 0, 200);
 
-if (!$catalogId)                              jsonError('Missing catalog_id', 422);
-if (!in_array($type, ['movie', 'tv'], true))  jsonError('Invalid type', 422);
+if (!$catalogId)                               jsonError('Missing catalog_id', 422);
+if (!in_array($type, ['movie', 'tv'], true))   jsonError('Invalid type', 422);
 if ($type === 'tv' && (!$season || !$episode)) jsonError('Season and episode required for TV', 422);
 
 $tmdbId = $catalogId;
@@ -58,45 +58,45 @@ try {
 
 $providers = [
     [
-        'id'       => 'vidsrc_cc',
+        'id'       => 'superembed',
         'label'    => 'Server 1',
-        'movie'    => "https://vidsrc.cc/v2/embed/movie/{tmdb_id}",
-        'tv'       => "https://vidsrc.cc/v2/embed/tv/{tmdb_id}/{season}/{episode}",
+        'movie'    => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1',
+        'tv'       => 'https://multiembed.mov/directstream.php?video_id={tmdb_id}&tmdb=1&s={season}&e={episode}',
         'priority' => 1,
     ],
     [
-        'id'       => 'vidsrc_me',
+        'id'       => 'player2048',
         'label'    => 'Server 2',
-        'movie'    => "https://vidsrc.me/embed/movie?tmdb={tmdb_id}",
-        'tv'       => "https://vidsrc.me/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}",
+        'movie'    => 'https://www.2embed.skin/embedtv/{tmdb_id}',
+        'tv'       => 'https://www.2embed.skin/embedtv/{tmdb_id}&s={season}&e={episode}',
         'priority' => 2,
     ],
     [
-        'id'       => 'vidlink',
+        'id'       => 'autoembed',
         'label'    => 'Server 3',
-        'movie'    => "https://vidlink.pro/movie/{tmdb_id}?autoplay=false",
-        'tv'       => "https://vidlink.pro/tv/{tmdb_id}/{season}/{episode}?autoplay=false",
+        'movie'    => 'https://player.autoembed.cc/embed/movie/{tmdb_id}',
+        'tv'       => 'https://player.autoembed.cc/embed/tv/{tmdb_id}/{season}/{episode}',
         'priority' => 3,
     ],
     [
-        'id'       => 'vidsrc_pm',
+        'id'       => 'smashystream',
         'label'    => 'Server 4',
-        'movie'    => "https://vidsrc.pm/embed/movie/{tmdb_id}",
-        'tv'       => "https://vidsrc.pm/embed/tv/{tmdb_id}/{season}/{episode}",
+        'movie'    => 'https://player.smashy.stream/movie/{tmdb_id}',
+        'tv'       => 'https://player.smashy.stream/tv/{tmdb_id}?s={season}&e={episode}',
         'priority' => 4,
     ],
     [
-        'id'       => 'vidsrc_in',
+        'id'       => 'embedsoap',
         'label'    => 'Server 5',
-        'movie'    => "https://vidsrc.in/embed/movie?tmdb={tmdb_id}",
-        'tv'       => "https://vidsrc.in/embed/tv?tmdb={tmdb_id}&season={season}&episode={episode}",
+        'movie'    => 'https://www.embedsoap.net/embed/movie/?id={tmdb_id}',
+        'tv'       => 'https://www.embedsoap.net/embed/tv/?id={tmdb_id}&s={season}&e={episode}',
         'priority' => 5,
     ],
     [
-        'id'       => 'twoembed',
+        'id'       => 'nontongo',
         'label'    => 'Server 6',
-        'movie'    => "https://www.2embed.cc/embed/{tmdb_id}",
-        'tv'       => "https://www.2embed.cc/embedtv/{tmdb_id}&s={season}&e={episode}",
+        'movie'    => 'https://www.NontonGo.net/embed/movie/{tmdb_id}',
+        'tv'       => 'https://www.NontonGo.net/embed/tv/{tmdb_id}/{season}/{episode}',
         'priority' => 6,
     ],
 ];
