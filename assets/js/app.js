@@ -61,22 +61,19 @@ const App = {
             document.body.style.overflow = '';
         };
 
-        const openModal = (overlay, e) => {
-            if (e) { e.stopPropagation(); e.stopImmediatePropagation(); }
+        const openModal = (overlay) => {
             overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            overlay.dataset.justOpened = '1';
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-                delete overlay.dataset.justOpened;
-            }));
         };
 
         const wire = (btnId, overlayId) => {
             const btn     = document.getElementById(btnId);
             const overlay = document.getElementById(overlayId);
-            if (btn && overlay) {
-                btn.addEventListener('click', (e) => openModal(overlay, e));
-            }
+            if (!btn || !overlay) return;
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openModal(overlay);
+            });
         };
 
         wire('settings-btn',        'settings-overlay');
@@ -89,14 +86,20 @@ const App = {
         });
 
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (overlay.dataset.justOpened) return;
-                if (e.target === overlay) closeAll();
+            let pdOnOverlay = false;
+
+            overlay.addEventListener('pointerdown', (e) => {
+                pdOnOverlay = (e.target === overlay);
+            });
+
+            overlay.addEventListener('pointerup', (e) => {
+                if (pdOnOverlay && e.target === overlay) closeAll();
+                pdOnOverlay = false;
             });
         });
 
         document.querySelectorAll('.modal-box').forEach(box => {
-            box.addEventListener('click', (e) => e.stopPropagation());
+            box.addEventListener('pointerdown', (e) => e.stopPropagation());
         });
 
         document.addEventListener('keydown', (e) => {
