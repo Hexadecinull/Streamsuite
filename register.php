@@ -49,7 +49,7 @@ require_once __DIR__ . '/includes/head.php';
 <div class="auth-page">
     <div class="auth-card">
         <h1 class="auth-title text-2xl">Create account</h1>
-        <p class="auth-subtitle">Free, no credit card required. Login optional — everything works as a guest.</p>
+        <p class="auth-subtitle">Free, no credit card required. Login optional · everything works as a guest.</p>
 
         <div id="auth-error" class="auth-error"></div>
 

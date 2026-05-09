@@ -197,7 +197,7 @@ $searchVal = htmlspecialchars(trim($_GET['q'] ?? ''), ENT_QUOTES, 'UTF-8');
                         <a href="/dmca">DMCA</a>
                     </p>
                     <p style="color:var(--c-text-3);font-size:0.78rem;border-top:1px solid var(--c-border);padding-top:0.75rem;margin-top:0.75rem;">
-                        &copy; <?= date('Y') ?> StreamSuite Contributors &mdash; Licensed under GPL-3.0<br>
+                        &copy; <?= date('Y') ?> StreamSuite Contributors &mdash;middot; Licensed under GPL-3.0<br>
                         Movie and TV data provided by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">TMDB</a>.
                     </p>
                 </div>

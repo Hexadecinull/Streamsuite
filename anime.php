@@ -32,7 +32,7 @@ require_once __DIR__ . '/includes/nav.php';
     </div>
 
     <div class="anime-hero">
-        <p class="anime-hero-text">Discover anime series and animated films — filtered from TMDB&rsquo;s Animation genre with Japanese origin.</p>
+        <p class="anime-hero-text">Discover anime series and animated films · filtered from TMDB&rsquo;s Animation genre with Japanese origin.</p>
         <div class="anime-tabs" id="anime-tabs">
             <button class="trending-tab active" data-filter="popular">Popular</button>
             <button class="trending-tab" data-filter="trending">Trending</button>

@@ -51,36 +51,26 @@ const App = {
     },
 
     setupPanels() {
-        const overlayIds = ['settings-overlay', 'account-overlay'];
-
         const closeAll = () => {
-            overlayIds.forEach(id => {
+            ['settings-overlay', 'account-overlay'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
             document.body.style.overflow = '';
         };
 
-        const openModal = (overlayId) => {
-            overlayIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = id === overlayId ? 'flex' : 'none';
-            });
-            document.body.style.overflow = 'hidden';
-        };
-
         const wire = (btnId, overlayId) => {
-            const btn     = document.getElementById(btnId);
+            const btn = document.getElementById(btnId);
             if (!btn) return;
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
+            btn.addEventListener('click', () => {
                 const overlay = document.getElementById(overlayId);
-                const isOpen  = overlay && overlay.style.display === 'flex';
-                if (isOpen) {
-                    closeAll();
-                } else {
-                    openModal(overlayId);
-                }
+                if (!overlay) return;
+                ['settings-overlay', 'account-overlay'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             });
         };
 
@@ -90,15 +80,12 @@ const App = {
         wire('mobile-account-btn',  'account-overlay');
 
         document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => { e.stopPropagation(); closeAll(); });
+            btn.addEventListener('click', closeAll);
         });
 
-        document.addEventListener('click', (e) => {
-            overlayIds.forEach(id => {
-                const overlay = document.getElementById(id);
-                if (!overlay || overlay.style.display !== 'flex') return;
-                const box = overlay.querySelector('.modal-box');
-                if (box && !box.contains(e.target)) closeAll();
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (!e.target.closest('.modal-box')) closeAll();
             });
         });
 
@@ -497,7 +484,8 @@ const App = {
             this.setPrefs({ contentLang: picker.value });
             I18n.currentLang = picker.value;
             I18n.apply();
-            Toast.show('Language updated — reload to apply to all content.');
+            Toast.show('Language updated  · reloading in 5 seconds…');
+            setTimeout(() => window.location.reload(), 5000);
         });
     },
 

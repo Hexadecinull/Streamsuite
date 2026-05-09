@@ -136,7 +136,7 @@ require_once __DIR__ . '/includes/head.php';
         </button>
 
         <div class="guest-note">
-            No account needed to watch — everything works as a guest. Login only required for cross-device sync.
+            No account needed to watch · everything works as a guest. Login only required for cross-device sync.
         </div>
 
         <div class="auth-footer">

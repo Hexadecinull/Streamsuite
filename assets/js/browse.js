@@ -157,7 +157,7 @@ const BrowsePage = {
     },
 
     renderCard(item) {
-        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
+        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '–';
         const badge  = typeof AgeBadge !== 'undefined' ? AgeBadge.get(item.rating) : null;
         return `
             <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">

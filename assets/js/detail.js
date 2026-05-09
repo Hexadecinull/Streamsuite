@@ -49,7 +49,7 @@ const DetailPage = {
     },
 
     renderMain(data) {
-        document.title = `${data.title} — StreamSuite`;
+        document.title = `${data.title} · StreamSuite`;
 
         const set = (id, value) => {
             const el = document.getElementById(id);
@@ -58,7 +58,7 @@ const DetailPage = {
 
         set('detail-title',    data.title);
         set('detail-year',     data.year || '');
-        set('detail-rating',   data.rating ? data.rating.toFixed(1) : '—');
+        set('detail-rating',   data.rating ? data.rating.toFixed(1) : '–');
         set('detail-runtime',  this.formatRuntime(data.runtime));
         set('detail-genres',   data.genres?.join(' · ') || '');
         set('detail-tagline',  data.tagline || '');
@@ -238,7 +238,7 @@ const DetailPage = {
                 <div class="card-body">
                     <div class="card-title">${this.escapeHtml(item.title)}</div>
                     <div class="card-meta">
-                        <span class="rating">★ ${item.rating?.toFixed(1) || '—'}</span>
+                        <span class="rating">★ ${item.rating?.toFixed(1) || '–'}</span>
                         <span>${item.year || ''}</span>
                     </div>
                 </div>

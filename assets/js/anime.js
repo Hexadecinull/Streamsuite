@@ -105,7 +105,7 @@ const AnimePage = {
         const grid = document.getElementById('browse-results');
         if (!grid) return;
         items.forEach(item => {
-            const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
+            const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '–';
             const badge  = typeof AgeBadge !== 'undefined' ? AgeBadge.get(item.rating) : null;
             const el = document.createElement('a');
             el.className = 'card';

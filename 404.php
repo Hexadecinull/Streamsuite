@@ -18,7 +18,7 @@
  */
 
 http_response_code(404);
-$pageTitle       = '404 — Page Not Found';
+$pageTitle       = '404 · Page Not Found';
 $pageDescription = 'This page does not exist.';
 require_once __DIR__ . '/includes/head.php';
 ?>

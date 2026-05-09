@@ -93,7 +93,7 @@ const HomePage = {
     showFeatured(index, container) {
         const item   = this.featuredItems[index];
         if (!item) return;
-        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
+        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '–';
         const type   = item.media_type === 'tv' ? 'Series' : 'Movie';
         const badge  = AgeBadge.get(item.vote_average);
 
@@ -243,7 +243,7 @@ const HomePage = {
     },
 
     renderCard(item) {
-        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '—';
+        const rating = item.rating ? parseFloat(item.rating).toFixed(1) : '–';
         const badge  = AgeBadge.get(item.vote_average);
         return `
             <a href="/detail?id=${item.id}&type=${item.media_type}" class="card">

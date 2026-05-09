@@ -120,7 +120,7 @@ const SearchPage = {
                 <div class="card-body">
                     <div class="card-title">${this.escapeHtml(item.title)}</div>
                     <div class="card-meta">
-                        <span class="rating">&#9733; ${item.rating?.toFixed(1) || '—'}</span>
+                        <span class="rating">&#9733; ${item.rating?.toFixed(1) || '–'}</span>
                         <span>${item.year || ''}</span>
                         ${badge ? `<span class="age-badge ${badge.cls}">${badge.label}</span>` : ''}
                         <span class="badge">${item.media_type === 'tv' ? 'Series' : 'Movie'}</span>

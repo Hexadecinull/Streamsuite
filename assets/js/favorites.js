@@ -64,7 +64,7 @@ const FavoritesPage = {
         const id      = item.id || item.catalog_id;
         const poster  = item.poster || item.poster_url || '/assets/img/placeholder-poster.svg';
         const year    = item.year || '';
-        const rating  = item.rating ? item.rating.toFixed(1) : '—';
+        const rating  = item.rating ? item.rating.toFixed(1) : '–';
 
         return `
             <div class="card" data-fav-id="${id}">

@@ -52,7 +52,7 @@ const Api = {
 
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.includes('application/json')) {
-                throw new Error(`Server error (HTTP ${response.status}) — expected JSON but got ${contentType.split(';')[0]}`);
+                throw new Error(`Server error (HTTP ${response.status})  · expected JSON but got ${contentType.split(';')[0]}`);
             }
 
             const data = await response.json();

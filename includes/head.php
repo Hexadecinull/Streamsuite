@@ -25,7 +25,7 @@ if (!isset($pageDescription)) $pageDescription = 'Stream everything. Own nothing
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle) ?> — StreamSuite</title>
+    <title><?= htmlspecialchars($pageTitle) ?> · StreamSuite</title>
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
     <meta name="robots" content="index, follow">
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">

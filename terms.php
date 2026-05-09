@@ -15,7 +15,7 @@ require_once __DIR__ . '/includes/nav.php';
     <div class="legal-content">
         <a href="javascript:history.back()" class="back-btn">&#8592; Back</a>
         <h1>Terms of Service</h1>
-        <p class="legal-meta">Last updated: <?= date('F j, Y') ?> &mdash; Effective immediately</p>
+        <p class="legal-meta">Last updated: <?= date('F j, Y') ?> &mdash;middot; Effective immediately</p>
 
         <h2>1. Acceptance of Terms</h2>
         <p>By accessing or using StreamSuite ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the Service.</p>
