@@ -51,28 +51,36 @@ const App = {
     },
 
     setupPanels() {
+        const overlayIds = ['settings-overlay', 'account-overlay'];
+
         const closeAll = () => {
-            ['settings-overlay', 'account-overlay'].forEach(id => {
+            overlayIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
-            const drawer = document.getElementById('mobile-drawer');
-            if (drawer) drawer.style.display = 'none';
             document.body.style.overflow = '';
         };
 
-        const openModal = (overlay) => {
-            overlay.style.display = 'flex';
+        const openModal = (overlayId) => {
+            overlayIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = id === overlayId ? 'flex' : 'none';
+            });
             document.body.style.overflow = 'hidden';
         };
 
         const wire = (btnId, overlayId) => {
             const btn     = document.getElementById(btnId);
-            const overlay = document.getElementById(overlayId);
-            if (!btn || !overlay) return;
+            if (!btn) return;
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                openModal(overlay);
+                const overlay = document.getElementById(overlayId);
+                const isOpen  = overlay && overlay.style.display === 'flex';
+                if (isOpen) {
+                    closeAll();
+                } else {
+                    openModal(overlayId);
+                }
             });
         };
 
@@ -85,21 +93,13 @@ const App = {
             btn.addEventListener('click', (e) => { e.stopPropagation(); closeAll(); });
         });
 
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            let pdOnOverlay = false;
-
-            overlay.addEventListener('pointerdown', (e) => {
-                pdOnOverlay = (e.target === overlay);
+        document.addEventListener('click', (e) => {
+            overlayIds.forEach(id => {
+                const overlay = document.getElementById(id);
+                if (!overlay || overlay.style.display !== 'flex') return;
+                const box = overlay.querySelector('.modal-box');
+                if (box && !box.contains(e.target)) closeAll();
             });
-
-            overlay.addEventListener('pointerup', (e) => {
-                if (pdOnOverlay && e.target === overlay) closeAll();
-                pdOnOverlay = false;
-            });
-        });
-
-        document.querySelectorAll('.modal-box').forEach(box => {
-            box.addEventListener('pointerdown', (e) => e.stopPropagation());
         });
 
         document.addEventListener('keydown', (e) => {
