@@ -150,7 +150,7 @@ const Player = {
             const titleEl    = document.getElementById('player-title-nav');
             if (titleEl) titleEl.textContent = titleData.title || 'Unknown';
 
-            document.title = (titleData.title || 'Watch') + ' · StreamSuite';
+            document.title = (titleData.title || 'Watch') + ' • StreamSuite';
 
             const backBtn = document.getElementById('back-to-detail');
             if (backBtn) backBtn.href = `/detail?id=${catalogId}&type=${type}`;

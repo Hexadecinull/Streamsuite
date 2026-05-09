@@ -250,3 +250,21 @@
     white-space: nowrap;
 }
 
+
+.filter-search-wrap--icon {
+    position: relative;
+}
+
+.filter-search-icon {
+    position: absolute;
+    left: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-text-3);
+    pointer-events: none;
+    display: block;
+}
+
+.filter-search-wrap--icon input {
+    padding-left: 2rem;
+}

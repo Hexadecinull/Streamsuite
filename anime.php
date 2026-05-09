@@ -32,7 +32,7 @@ require_once __DIR__ . '/includes/nav.php';
     </div>
 
     <div class="anime-hero">
-        <p class="anime-hero-text">Discover anime series and animated films · filtered from TMDB&rsquo;s Animation genre with Japanese origin.</p>
+        <p class="anime-hero-text">Discover anime series and animated films • filtered from TMDB&rsquo;s Animation genre with Japanese origin.</p>
         <div class="anime-tabs" id="anime-tabs">
             <button class="trending-tab active" data-filter="popular">Popular</button>
             <button class="trending-tab" data-filter="trending">Trending</button>
@@ -41,6 +41,13 @@ require_once __DIR__ . '/includes/nav.php';
     </div>
 
     <form id="anime-filter-form" class="filter-bar">
+        <div class="filter-search-wrap filter-search-wrap--icon">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="filter-search-icon">
+                <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <input type="text" id="anime-search-input" placeholder="Search anime&#8230;" autocomplete="off">
+        </div>
         <select id="anime-genre" aria-label="Genre">
             <option value="">All Anime Genres</option>
             <option value="16">Animation</option>
@@ -58,9 +65,6 @@ require_once __DIR__ . '/includes/nav.php';
             <option value="first_air_date">Release Date</option>
         </select>
         <button type="submit" class="btn btn-primary btn-sm">Apply</button>
-        <div class="filter-search-wrap">
-            <input type="text" id="anime-search-input" placeholder="Search anime&#8230;" autocomplete="off">
-        </div>
     </form>
 
     <div id="browse-results" class="browse-grid"></div>

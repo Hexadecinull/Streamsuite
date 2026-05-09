@@ -18,25 +18,11 @@
  */
 
 http_response_code(404);
-$pageTitle       = '404 · Page Not Found';
+$pageTitle       = '404 • Page Not Found';
 $pageDescription = 'This page does not exist.';
 require_once __DIR__ . '/includes/head.php';
+require_once __DIR__ . '/includes/nav.php';
 ?>
-
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="/" class="logo">
-            <img src="/assets/img/logo-mark.svg" alt="" class="logo-mark">
-            <span>StreamSuite</span>
-        </a>
-        <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/browse?type=movie" class="nav-link">Movies</a>
-            <a href="/browse?type=tv" class="nav-link">Series</a>
-        </nav>
-        <button class="mobile-menu-btn btn btn-icon">&#9776;</button>
-    </div>
-</header>
 
 <main style="min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;">
     <div>
@@ -50,18 +36,7 @@ require_once __DIR__ . '/includes/head.php';
     </div>
 </main>
 
-<div class="mobile-drawer">
-    <a href="/" class="mobile-nav-item">Home</a>
-    <a href="/browse?type=movie" class="mobile-nav-item">Movies</a>
-    <a href="/browse?type=tv" class="mobile-nav-item">Series</a>
-    <a href="/browse" class="mobile-nav-item">Browse</a>
-    <a href="/favorites" class="mobile-nav-item">Favorites</a>
-    <a href="/history" class="mobile-nav-item">History</a>
-    <a href="/settings" class="mobile-nav-item">Settings</a>
-    <hr style="border-color:var(--c-border);margin:0.5rem 0;">
-    <a href="/login" class="mobile-nav-item">Login / Register</a>
-</div>
-
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/app.js"></script>

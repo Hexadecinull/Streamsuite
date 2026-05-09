@@ -49,7 +49,7 @@ const DetailPage = {
     },
 
     renderMain(data) {
-        document.title = `${data.title} · StreamSuite`;
+        document.title = `${data.title} • StreamSuite`;
 
         const set = (id, value) => {
             const el = document.getElementById(id);

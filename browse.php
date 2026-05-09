@@ -33,7 +33,11 @@ require_once __DIR__ . '/includes/nav.php';
     </div>
 
     <form id="filter-form" class="filter-bar">
-        <div class="filter-search-wrap">
+        <div class="filter-search-wrap filter-search-wrap--icon">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="filter-search-icon">
+                <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
             <input type="text" id="browse-search-input" placeholder="Search&#8230;" autocomplete="off">
         </div>
         <select name="type" aria-label="Media type">

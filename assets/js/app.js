@@ -198,7 +198,7 @@ const App = {
                     ${results.slice(0, 7).map(item => {
                         const type  = item.media_type === 'tv' ? 'Series' : 'Movie';
                         const year  = item.year || '';
-                        const label = [type, year].filter(Boolean).join(' · ');
+                        const label = [type, year].filter(Boolean).join(' • ');
                         return `
                             <a class="search-dropdown-item" href="/detail?id=${item.id}&type=${item.media_type}">
                                 <img src="${this.esc(item.poster_url)}" alt="" loading="lazy"
@@ -484,7 +484,7 @@ const App = {
             this.setPrefs({ contentLang: picker.value });
             I18n.currentLang = picker.value;
             I18n.apply();
-            Toast.show('Language updated  · reloading in 5 seconds…');
+            Toast.show('Language updated  • reloading in 5 seconds…');
             setTimeout(() => window.location.reload(), 5000);
         });
     },
